@@ -1,0 +1,29 @@
+# --- Web Framework ---
+Django==4.2.21
+
+# --- Machine Learning / Deep Learning ---
+tensorflow==2.13.1
+keras==2.13.1
+h5py==3.11.0
+scikit-learn==1.3.2
+
+# --- Data Processing ---
+numpy==1.24.3
+pandas==2.0.3
+scipy==1.10.1
+
+# --- Image Processing ---
+opencv-python==4.11.0.86
+Pillow==10.4.0
+
+# --- Visualization ---
+matplotlib==3.7.5
+
+# --- Association Rules (Tag Recommendation) ---
+apyori==1.1.2
+
+# --- HTTP ---
+requests==2.32.3
+
+# --- Windows timezone data (required on Windows) ---
+tzdata==2025.2

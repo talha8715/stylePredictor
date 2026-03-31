@@ -1,0 +1,41 @@
+{% extends 'Dbase.html' %}
+
+{% block content %}
+
+<section id="contact-us" class="contact-us section-bg">
+    <div class="container">
+        <div class="row">
+            <div class="title text-center wow fadeIn" data-wow-duration="500ms">
+                <h2>Image <span class="color">Gallery</span></h2>
+                <div class="border"></div>
+                <p style="max-width:500px;margin:1rem auto 0;">Your personal collection of fashion images and their classifications.</p>
+            </div>
+
+            {% if data %}
+            <div class="clearfix">
+                {% for i, s in data %}
+                <article class="col-md-4 col-sm-6 col-xs-12 clearfix wow fadeInUp" data-wow-duration="500ms" data-wow-delay="{{ forloop.counter0|divisibleby:3|yesno:'0,200,400' }}ms">
+                    <div class="post-block">
+                        <div class="media-wrapper">
+                            <img src=".{{i}}" alt="{{s}}" class="img-responsive">
+                        </div>
+                        <div class="content" style="display:flex;align-items:center;gap:0.5rem;">
+                            <span style="display:inline-block;width:8px;height:8px;background:var(--accent);border-radius:50%;flex-shrink:0;"></span>
+                            <h2><span class="text-accent">{{s}}</span></h2>
+                        </div>
+                    </div>
+                </article>
+                {% endfor %}
+            </div>
+            {% else %}
+            <div class="col-md-12 text-center" style="padding:3rem 0;">
+                <i class="fas fa-images" style="font-size:4rem;color:var(--text-muted);opacity:0.3;display:block;margin-bottom:1.5rem;"></i>
+                <h3 style="color:var(--text-muted);">No images in your gallery yet</h3>
+                <p style="color:var(--text-muted);">Start uploading images through our classification tools to build your collection.</p>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</section>
+
+{% endblock %}

@@ -1,0 +1,158 @@
+{% extends 'Dbase.html' %}
+
+{% load static %}
+
+{% block content %}
+
+<section class="section-bg" style="padding-top: 2rem;">
+    <div class="container">
+        <div class="title text-center wow fadeIn" data-wow-duration="500ms">
+            <h2>Data <span class="color">Visualization</span></h2>
+            <div class="border"></div>
+        </div>
+
+        <!-- Chart 1: Brand Rating Counts and Mean Ratings -->
+        <div id="project-section">
+            <div class="chart-section">
+                <h3 class="chart-title"><i class="fas fa-chart-bar mr-2"></i>Brand Rating Counts and Mean Ratings</h3>
+                <div class="chart-wrapper">
+                    <canvas id="brandChart"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <!-- Chart 2: Personalized Liked Brands -->
+        <div id="service-section">
+            <div class="chart-section">
+                <h3 class="chart-title"><i class="fas fa-heart mr-2"></i>Your Personalized Liked Brands</h3>
+                <div class="chart-wrapper">
+                    <canvas id="userChart"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+{% endblock content %}
+
+{% block scr %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<script>
+(function() {
+    var bn = JSON.parse('{{ bn|escapejs }}');
+    var bm = JSON.parse('{{ bm|escapejs }}').map(Number);
+    var bc = JSON.parse('{{ bc|escapejs }}').map(Number);
+
+    var brandCtx = document.getElementById('brandChart').getContext('2d');
+    new Chart(brandCtx, {
+        type: 'bar',
+        data: {
+            labels: bn,
+            datasets: [{
+                label: 'Rating Mean',
+                data: bm,
+                backgroundColor: 'rgba(124, 58, 237, 0.65)',
+                borderColor: 'rgba(124, 58, 237, 1)',
+                borderWidth: 2,
+                borderRadius: 8,
+                borderSkipped: false
+            }, {
+                label: 'Rating Count',
+                data: bc,
+                backgroundColor: 'rgba(244, 114, 182, 0.6)',
+                borderColor: 'rgba(244, 114, 182, 1)',
+                borderWidth: 2,
+                borderRadius: 6,
+                borderSkipped: false
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    position: 'top',
+                    labels: { color: '#C4B5FD', font: { family: 'Inter', size: 13, weight: 500 }, padding: 20, usePointStyle: true, pointStyle: 'rectRounded' }
+                },
+                tooltip: {
+                    backgroundColor: '#1A1333',
+                    titleColor: '#F5F3FF',
+                    bodyColor: '#C4B5FD',
+                    borderColor: '#3D3270',
+                    borderWidth: 1,
+                    cornerRadius: 10,
+                    padding: 14,
+                    titleFont: { family: 'Inter', weight: 600 },
+                    bodyFont: { family: 'Inter' }
+                }
+            },
+            scales: {
+                x: {
+                    ticks: { color: '#C4B5FD', font: { family: 'Inter', size: 11 } },
+                    grid: { color: 'rgba(45, 34, 85, 0.5)' },
+                    title: { display: true, text: 'Brands', color: '#C4B5FD', font: { family: 'Inter', weight: 600, size: 13 } }
+                },
+                y: {
+                    ticks: { color: '#C4B5FD', font: { family: 'Inter', size: 11 } },
+                    grid: { color: 'rgba(45, 34, 85, 0.5)' },
+                    title: { display: true, text: 'Amount', color: '#C4B5FD', font: { family: 'Inter', weight: 600, size: 13 } }
+                }
+            }
+        }
+    });
+
+    var ubn = JSON.parse('{{ ubn|escapejs }}');
+    var uhr = JSON.parse('{{ uhr|escapejs }}').map(Number);
+
+    var userCtx = document.getElementById('userChart').getContext('2d');
+    new Chart(userCtx, {
+        type: 'bar',
+        data: {
+            labels: ubn,
+            datasets: [{
+                label: 'Rating Count',
+                data: uhr,
+                backgroundColor: 'rgba(45, 212, 191, 0.65)',
+                borderColor: 'rgba(45, 212, 191, 1)',
+                borderWidth: 2,
+                borderRadius: 8,
+                borderSkipped: false
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    position: 'top',
+                    labels: { color: '#C4B5FD', font: { family: 'Inter', size: 13, weight: 500 }, padding: 20, usePointStyle: true, pointStyle: 'rectRounded' }
+                },
+                tooltip: {
+                    backgroundColor: '#1A1333',
+                    titleColor: '#F5F3FF',
+                    bodyColor: '#C4B5FD',
+                    borderColor: '#3D3270',
+                    borderWidth: 1,
+                    cornerRadius: 10,
+                    padding: 14,
+                    titleFont: { family: 'Inter', weight: 600 },
+                    bodyFont: { family: 'Inter' }
+                }
+            },
+            scales: {
+                x: {
+                    ticks: { color: '#C4B5FD', font: { family: 'Inter', size: 11 } },
+                    grid: { color: 'rgba(45, 34, 85, 0.5)' },
+                    title: { display: true, text: 'Brands', color: '#C4B5FD', font: { family: 'Inter', weight: 600, size: 13 } }
+                },
+                y: {
+                    ticks: { color: '#C4B5FD', font: { family: 'Inter', size: 11 } },
+                    grid: { color: 'rgba(45, 34, 85, 0.5)' },
+                    title: { display: true, text: 'Count', color: '#C4B5FD', font: { family: 'Inter', weight: 600, size: 13 } }
+                }
+            }
+        }
+    });
+})();
+</script>
+{% endblock %}

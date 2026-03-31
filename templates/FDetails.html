@@ -1,0 +1,142 @@
+
+{% extends 'Dbase.html' %}
+
+
+{% block content %}
+
+<!-- Srart Contact Us
+  =========================================== -->   
+  <section id="contact-us" class="contact-us section-bg">
+    <div class="container">
+      <div class="row">
+
+        <!-- section title -->
+        <div class="title text-center wow fadeIn" data-wow-duration="500ms">
+          <h2>Fashion <span class="color">Prefrences</span></h2>
+          <div class="border"></div>
+        </div>
+        <!-- /section title -->
+
+        <!-- Contact Details -->
+        <div class="contact-form col-md-7 wow fadeInUp" data-wow-duration="500ms" data-wow-delay="300ms">
+          <form id="contact-form" action="" method="post" accept-charset="utf-8">
+
+            {% csrf_token %}
+
+            <div class="form-group">
+              <label for="dress" >How Much you concious about dress?</label>
+
+
+              <select name="fashion_consious" id="fashion" class="form-control">
+                <option value="Not">Not</option>
+                <option value="Littlebit">Little bit</option>
+                <option value="50">50%</option>
+                <option value="100">100%</option>
+
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="brand">How Much you concious about brand?</label>
+
+              <select name="brand_consious" id="brand_consious" class="form-control">
+                <option value="No">No</option>
+                <option value="50">50%</option>
+                <option value="100">100%</option>
+
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="fav">Your most favourite dressing style?</label>
+
+              <select name="fav_dressing_type" id="fav_dressing_type" class="form-control">
+                <option value="Formal">Formal</option>
+                <option value="Casual">Casual</option>
+                <option value="Semi_Formal">Semi_Formal</option>
+
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="cat">Your most favourite dressing category?</label>
+
+              <select name="fav_design" id="fav_design" class="form-control"> 
+                <option value="check">Check</option>
+                <option value="plain">Plain</option>
+                <option value="lines">Lines</option>
+
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="color">Your most favourite dressing color?</label>
+
+              <select name="fav_color" id="color" class="form-control">
+
+                <option value="black">black</option>
+                <option value="red">red</option>
+                <option value="white">white</option>
+                <option value="white">blue</option>
+                <option value="white">grey</option>
+
+              </select>
+            </div>
+
+            <br>
+            <div id="cf-submit">
+              <input class="btn btn-transparent" id="contact-submit" type="submit" name="Submit_p" value="Submit">
+            </div>
+
+          </form>
+        </div>
+        <!-- / End Contact Details -->
+        
+        <div class="col-md-5 padding-0 ">
+          <!-- <br>
+          <br> -->
+          <img style="max-width:100%;height:auto;border-radius:var(--radius-lg);border:1px solid var(--border);" class="img-responsive" src="../static/home/images/about/fashion.jpg" alt="Fashion Preferences">
+        </div>
+        <!-- ./End Contact Form -->
+
+      </div> <!-- end row -->
+    </div> <!-- end container -->
+
+  </section> <!-- end section -->
+
+
+
+<section id="services" class="bg-one section">
+  <div class="container">
+    <div class="row">
+      
+      <!-- section title -->
+      <div class="title text-center wow fadeIn" data-wow-duration="500ms">
+        <h2>Your <span class="color">Detail</span></h2>
+        <div class="border"></div>
+      </div>
+      <!-- /section title -->
+      
+      
+      <div class="col-md-12 padding-0 ">
+        
+        <h2 style="text-align: center;  font-weight: bold;">You are <span class="text-accent">{{F}}</span> Consious about Dressing</h2>
+      </div>
+        <div class="col-md-12 padding-0 ">
+        
+        <h2 style="text-align: center; font-weight: bold;">You are <span class="text-accent">{{B}}</span> Consious about Brands</h2>
+      </div>
+      <div class="col-md-12 padding-0 ">
+        
+        <h2 style="text-align: center;  font-weight: bold;"><span class="text-accent">{{FDT}}</span> is your most favourite Dressing style.</h2>
+      </div>
+      <div class="col-md-12 padding-0 ">
+        
+        <h2 style="text-align: center; font-weight: bold;"><span class="text-accent">{{FD}}</span> is your most favourite Dressing Category.</h2>
+      </div>
+      <div class="col-md-12 padding-0 ">
+        
+        <h2 style="text-align: center; font-weight: bold;"><span class="text-accent">{{FC}}</span> is your most favourite dressing Color.</h2>
+      </div>
+
+    </div>    <!-- End row -->
+  </div>    <!-- End container -->
+</section> 
+
+  {% endblock %}

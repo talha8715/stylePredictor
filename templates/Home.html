@@ -1,0 +1,278 @@
+{% extends 'Dbase.html' %}
+
+{% block carosul %}
+
+<section class="hero-area" style="min-height:60vh;">
+    <div class="block">
+        <div class="hero-badge"><i class="fas fa-chart-line mr-1"></i> Your Dashboard</div>
+        <h1>Welcome Back, {{ request.user.first_name|default:request.user.username }}</h1>
+        <p>Explore your fashion analytics, get predictions, and discover new style recommendations powered by AI.</p>
+        <div style="display:flex;gap:0.75rem;justify-content:center;flex-wrap:wrap;">
+            <a data-scroll href="#data-viz" class="btn btn-transparent">
+                <i class="fas fa-chart-bar mr-1"></i> View Analytics
+            </a>
+            <a data-scroll href="#services" class="btn btn-transparent" style="background:rgba(124,58,237,0.12) !important;border:1px solid rgba(124,58,237,0.4) !important;color:var(--primary-light) !important;box-shadow:none !important;">
+                <i class="fas fa-magic mr-1"></i> Our Services
+            </a>
+        </div>
+    </div>
+</section>
+
+{% endblock %}
+
+{% block con %}
+<script>
+    document.body.scrollTop = "0px";
+    if (document.location.hash === "#project-section") {
+        $('body').animate({ scrollTop: $('#project-section').offset().top }, 'slow');
+    }
+    if (document.location.hash === "#service-section") {
+        $('body').animate({ scrollTop: $('#service-section').offset().top }, 'slow');
+    }
+</script>
+{% endblock %}
+
+{% block content %}
+
+<!-- Data Visualization Section -->
+<section id="data-viz" class="section-bg" style="padding: 5rem 0 !important;">
+    <div class="container">
+        <div class="row">
+            <div class="title text-center wow fadeIn" data-wow-duration="500ms">
+                <h2>Data <span class="color">Visualization</span></h2>
+                <div class="border"></div>
+                <p style="max-width:600px;margin:1rem auto 0;font-size:1.05rem;">Insights from fashion trends and your personalized style preferences.</p>
+            </div>
+
+            <!-- Chart 1: Brand Rating -->
+            <div class="col-md-12" id="project-section">
+                <div class="chart-section wow fadeInUp" data-wow-duration="500ms">
+                    <h3 class="chart-title"><i class="fas fa-chart-bar mr-2"></i>Brand Rating Counts &amp; Mean Ratings</h3>
+                    <div class="chart-wrapper">
+                        <canvas id="brandChart"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Chart 2: User Likes -->
+            <div class="col-md-12" id="service-section">
+                <div class="chart-section wow fadeInUp" data-wow-duration="500ms" data-wow-delay="200ms">
+                    <h3 class="chart-title"><i class="fas fa-heart mr-2"></i>Your Personalized Liked Dress Categories</h3>
+                    <div class="chart-wrapper">
+                        <canvas id="userChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Services Section -->
+<section id="services" class="bg-one section">
+    <div class="container">
+        <div class="row">
+            <div class="title text-center wow fadeIn" data-wow-duration="500ms">
+                <h2>Our <span class="color">Services</span></h2>
+                <div class="border"></div>
+            </div>
+
+            <article class="col-md-4 col-sm-6 col-xs-12 wow fadeInUp" data-wow-duration="500ms">
+                <div class="service-block text-center">
+                    <div class="service-icon text-center"><i class="tf-globe"></i></div>
+                    <h3>Dress Predictor</h3>
+                    <p>Provide inputs and get AI-powered predictions that match your personality and style preferences.</p>
+                </div>
+            </article>
+
+            <article class="col-md-4 col-sm-6 col-xs-12 wow fadeInUp" data-wow-duration="500ms" data-wow-delay="200ms">
+                <div class="service-block text-center">
+                    <div class="service-icon text-center"><i class="tf-ion-laptop"></i></div>
+                    <h3>Recommendation System</h3>
+                    <p>Get personalized suggestions based on your style history and trending fashion in the market.</p>
+                </div>
+            </article>
+
+            <article class="col-md-4 col-sm-6 col-xs-12 wow fadeInUp" data-wow-duration="500ms" data-wow-delay="400ms">
+                <div class="service-block text-center">
+                    <div class="service-icon text-center"><i class="tf-genius"></i></div>
+                    <h3>User Profiler</h3>
+                    <p>Manage your profile, track fashion history, and get insights that evolve with your style.</p>
+                </div>
+            </article>
+
+            <article class="col-md-4 col-sm-6 col-xs-12 wow fadeInUp" data-wow-duration="500ms" data-wow-delay="200ms">
+                <div class="service-block text-center">
+                    <div class="service-icon text-center"><i class="tf-dial"></i></div>
+                    <h3>Look Book</h3>
+                    <p>Build your personal fashion gallery. Upload, organize, and curate your style collection.</p>
+                </div>
+            </article>
+
+            <article class="col-md-4 col-sm-6 col-xs-12 wow fadeInUp" data-wow-duration="500ms" data-wow-delay="400ms">
+                <div class="service-block text-center">
+                    <div class="service-icon text-center"><i class="tf-target3"></i></div>
+                    <h3>Multi-Input AI</h3>
+                    <p>Process text and image inputs through our AI models to discover patterns and generate predictions.</p>
+                </div>
+            </article>
+
+            <article class="col-md-4 col-sm-6 col-xs-12 wow fadeInUp" data-wow-duration="500ms" data-wow-delay="600ms">
+                <div class="service-block text-center kill-margin-bottom">
+                    <div class="service-icon text-center"><i class="tf-lifesaver"></i></div>
+                    <h3>Social Features</h3>
+                    <p>Share posts, like content, comment on fashion choices, and connect with style enthusiasts.</p>
+                </div>
+            </article>
+        </div>
+    </div>
+</section>
+
+<!-- Counter Section -->
+<section id="counter" class="parallax-section bg-1 section overly">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-3 col-sm-6 col-xs-12 text-center wow fadeInDown" data-wow-duration="500ms">
+                <div class="counters-item">
+                    <i class="tf-ion-android-happy"></i>
+                    <span data-speed="3000" data-to="320">320</span>
+                    <h3>Happy Clients</h3>
+                </div>
+            </div>
+            <div class="col-md-3 col-sm-6 col-xs-12 text-center wow fadeInDown" data-wow-duration="500ms" data-wow-delay="200ms">
+                <div class="counters-item">
+                    <i class="tf-ion-archive"></i>
+                    <span data-speed="3000" data-to="565">565</span>
+                    <h3>Projects Completed</h3>
+                </div>
+            </div>
+            <div class="col-md-3 col-sm-6 col-xs-12 text-center wow fadeInDown" data-wow-duration="500ms" data-wow-delay="400ms">
+                <div class="counters-item">
+                    <i class="tf-ion-thumbsup"></i>
+                    <span data-speed="3000" data-to="95">95</span>
+                    <h3>Positive Feedback</h3>
+                </div>
+            </div>
+            <div class="col-md-3 col-sm-6 col-xs-12 text-center wow fadeInDown" data-wow-duration="500ms" data-wow-delay="600ms">
+                <div class="counters-item kill-margin-bottom">
+                    <i class="tf-ion-coffee"></i>
+                    <span data-speed="3000" data-to="2500">2500</span>
+                    <h3>Cups of Coffee</h3>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+{% endblock %}
+
+{% block scr %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<script>
+(function() {
+    var categories = JSON.parse('{{ bn|escapejs }}');
+    var ratingMeans = JSON.parse('{{ bm|escapejs }}').map(Number);
+    var ratingCounts = JSON.parse('{{ bc|escapejs }}').map(Number);
+
+    var brandCtx = document.getElementById('brandChart').getContext('2d');
+    new Chart(brandCtx, {
+        type: 'bar',
+        data: {
+            labels: categories,
+            datasets: [{
+                label: 'Rating Mean',
+                data: ratingMeans,
+                backgroundColor: 'rgba(124, 58, 237, 0.65)',
+                borderColor: 'rgba(124, 58, 237, 1)',
+                borderWidth: 2,
+                borderRadius: 8,
+                borderSkipped: false
+            }, {
+                label: 'Rating Count',
+                data: ratingCounts,
+                backgroundColor: 'rgba(244, 114, 182, 0.6)',
+                borderColor: 'rgba(244, 114, 182, 1)',
+                borderWidth: 2,
+                borderRadius: 8,
+                borderSkipped: false
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    position: 'top',
+                    labels: { color: '#C4B5FD', font: { family: 'Inter', size: 13, weight: 500 }, padding: 20, usePointStyle: true, pointStyle: 'rectRounded' }
+                },
+                tooltip: {
+                    backgroundColor: '#1A1333',
+                    titleColor: '#F5F3FF',
+                    bodyColor: '#C4B5FD',
+                    borderColor: '#3D3270',
+                    borderWidth: 1,
+                    cornerRadius: 10,
+                    padding: 14,
+                    titleFont: { family: 'Inter', weight: 600 },
+                    bodyFont: { family: 'Inter' }
+                }
+            },
+            scales: {
+                x: {
+                    ticks: { color: '#C4B5FD', font: { family: 'Inter', size: 11 } },
+                    grid: { color: 'rgba(45, 34, 85, 0.5)' },
+                    title: { display: true, text: 'Brands', color: '#C4B5FD', font: { family: 'Inter', weight: 600, size: 13 } }
+                },
+                y: {
+                    ticks: { color: '#C4B5FD', font: { family: 'Inter', size: 11 } },
+                    grid: { color: 'rgba(45, 34, 85, 0.5)' },
+                    title: { display: true, text: 'Amount', color: '#C4B5FD', font: { family: 'Inter', weight: 600, size: 13 } }
+                }
+            }
+        }
+    });
+
+    var userCategories = JSON.parse('{{ ubn|escapejs }}');
+    var userRatingCounts = JSON.parse('{{ uhr|escapejs }}').map(Number);
+    var colors = ['rgba(124,58,237,0.7)', 'rgba(244,114,182,0.7)', 'rgba(45,212,191,0.65)', 'rgba(251,191,36,0.65)', 'rgba(56,189,248,0.65)', 'rgba(52,211,153,0.65)', 'rgba(251,113,133,0.65)', 'rgba(167,139,250,0.65)'];
+    var borderColors = ['rgba(124,58,237,1)', 'rgba(244,114,182,1)', 'rgba(45,212,191,1)', 'rgba(251,191,36,1)', 'rgba(56,189,248,1)', 'rgba(52,211,153,1)', 'rgba(251,113,133,1)', 'rgba(167,139,250,1)'];
+    var bgColors = userCategories.map(function(_, i) { return colors[i % colors.length]; });
+    var bdColors = userCategories.map(function(_, i) { return borderColors[i % borderColors.length]; });
+
+    var userCtx = document.getElementById('userChart').getContext('2d');
+    new Chart(userCtx, {
+        type: 'doughnut',
+        data: {
+            labels: userCategories,
+            datasets: [{
+                data: userRatingCounts,
+                backgroundColor: bgColors,
+                borderColor: bdColors,
+                borderWidth: 2,
+                hoverOffset: 8
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    position: 'right',
+                    labels: { color: '#C4B5FD', font: { family: 'Inter', size: 13, weight: 500 }, padding: 16, usePointStyle: true, pointStyle: 'circle' }
+                },
+                tooltip: {
+                    backgroundColor: '#1A1333',
+                    titleColor: '#F5F3FF',
+                    bodyColor: '#C4B5FD',
+                    borderColor: '#3D3270',
+                    borderWidth: 1,
+                    cornerRadius: 10,
+                    padding: 14,
+                    titleFont: { family: 'Inter', weight: 600 },
+                    bodyFont: { family: 'Inter' }
+                }
+            }
+        }
+    });
+})();
+</script>
+{% endblock %}

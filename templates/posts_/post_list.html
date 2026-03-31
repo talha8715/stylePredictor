@@ -1,0 +1,86 @@
+{% extends 'Base.html' %}
+{% load humanize %}
+{% block title %}{{ block.super }} | Feed{% endblock title %}
+{% block content %}
+
+<div class="row">
+    <div class="col-md-8 my-4">
+        <div class="row">
+            {% if object_list %}
+            {% for obj in object_list %}
+            <div class="col-md-6">
+                <div class="card mb-4" style="overflow:hidden;">
+                    <img class="card-img-top img-fluid" src="{{ obj.image.url }}" alt="{{ obj.title }}" style="height:300px;object-fit:cover;">
+                    <div class="card-body">
+                        <h5 class="card-title" style="font-weight:700;">
+                            <a href="{% url 'detail' obj.slug %}" style="color:var(--text-primary);">{{ obj.title }}</a>
+                        </h5>
+                        <div style="font-size:0.85rem;color:var(--text-muted);margin-bottom:0.75rem;">
+                            <span><i class="fas fa-heart mr-1" style="color:var(--rose);"></i> {{ obj.likes_count }}</span>
+                            <span class="ml-2"><i class="fas fa-tag mr-1"></i> #{{ obj.tag }}</span>
+                            <span class="ml-2"><i class="fas fa-calendar mr-1"></i> {{ obj.event }}</span>
+                        </div>
+                        <div style="font-size:0.85rem;color:var(--text-muted);margin-bottom:1rem;">
+                            <i class="fas fa-folder mr-1"></i>
+                            {% for cat in obj.get_categories %}
+                            <a href="post1?q={{ request.GET.q }}&cat={{ cat }}" style="color:var(--primary-light);">{{ cat }}</a>{% if not forloop.last %}, {% endif %}
+                            {% endfor %}
+                        </div>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <a href="{% url 'detail' obj.slug %}" class="btn btn-primary btn-sm">
+                                <i class="fas fa-eye mr-1"></i> Details
+                            </a>
+                            <div class="user-icons">
+                                {% if obj in user_liked_posts %}
+                                <form action="{% url 'post1' %}" id='like_form{{ obj.id }}' method="POST">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="unlike" value="{{ obj.id }}">
+                                    <a href="javascript:{}" onclick="document.getElementById('like_form{{obj.id}}').submit(); return false;">
+                                        <i class="fas fa-thumbs-up"></i>
+                                    </a>
+                                </form>
+                                {% else %}
+                                <form action="{% url 'post1' %}" id='unlike_form{{ obj.id }}' method="POST">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="like" value="{{ obj.id }}">
+                                    <a href="javascript:{}" onclick="document.getElementById('unlike_form{{obj.id}}').submit(); return false;">
+                                        <i class="far fa-thumbs-up"></i>
+                                    </a>
+                                </form>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <i class="far fa-clock mr-1"></i> {{obj.updated_at|naturaltime}} &middot;
+                        <a href="?author={{ obj.user }}">{{ obj.user }}</a>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+            {% else %}
+            <div class="col-12">
+                <div class="glass-card text-center">
+                    <i class="fas fa-inbox" style="font-size:3rem;color:var(--text-muted);margin-bottom:1rem;display:block;"></i>
+                    <p style="color:var(--text-muted);">No posts found.</p>
+                </div>
+            </div>
+            {% endif %}
+        </div>
+
+        {% if is_paginated %}
+        <ul class="pagination justify-content-center mb-4">
+            {% if page_obj.has_previous %}
+            <li class="page-item"><a class="page-link" href="?page={{ page_obj.previous_page_number }}">&larr; Older</a></li>
+            {% else %}
+            <li class="page-item disabled"><a class="page-link" href="">&larr; Older</a></li>
+            {% endif %}
+            {% if page_obj.has_next %}
+            <li class="page-item"><a class="page-link" href="?page={{ page_obj.next_page_number }}">Newer &rarr;</a></li>
+            {% else %}
+            <li class="page-item disabled"><a class="page-link" href="#">Newer &rarr;</a></li>
+            {% endif %}
+        </ul>
+        {% endif %}
+    </div>
+{% endblock content %}

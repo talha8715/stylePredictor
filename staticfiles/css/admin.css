@@ -1,0 +1,648 @@
+/* ============================================
+   StylePredictor — Admin Theme
+   Matches the project's purple/dark design system
+   ============================================ */
+
+/* --- Header --- */
+#header {
+    background: linear-gradient(135deg, #1A1333 0%, #251D42 50%, #7C3AED 100%);
+    padding: 12px 20px;
+    color: #F5F3FF;
+    box-shadow: 0 4px 20px rgba(124, 58, 237, 0.25);
+}
+
+#branding h1 {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    color: #F5F3FF;
+    font-weight: 700;
+    font-size: 22px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 0;
+    padding: 0;
+}
+
+#branding h1 a:link,
+#branding h1 a:visited {
+    color: #F5F3FF;
+}
+
+#heading_text {
+    font-family: 'Inter', sans-serif;
+    font-weight: 700;
+    background: linear-gradient(135deg, #A78BFA, #F472B6);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    letter-spacing: -0.3px;
+}
+
+#heading_sub {
+    font-family: 'Inter', sans-serif;
+    font-weight: 400;
+    font-size: 14px;
+    color: #C4B5FD;
+    opacity: 0.85;
+}
+
+/* --- Remove Django default logo --- */
+#branding h1 img,
+#branding h1 svg {
+    display: none !important;
+}
+
+/* --- Body --- */
+body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    background: #0F0B1E;
+    color: #F5F3FF;
+}
+
+/* --- Links --- */
+a:link,
+a:visited {
+    color: #A78BFA;
+    text-decoration: none;
+}
+
+a:hover,
+a:focus {
+    color: #C4B5FD;
+}
+
+/* --- Breadcrumbs --- */
+div.breadcrumbs {
+    background: #1A1333;
+    color: #C4B5FD;
+    border-bottom: 1px solid #2D2255;
+    padding: 10px 20px;
+    font-size: 13px;
+}
+
+div.breadcrumbs a {
+    color: #A78BFA;
+}
+
+div.breadcrumbs a:focus,
+div.breadcrumbs a:hover {
+    color: #F472B6;
+}
+
+/* --- Module headers / captions --- */
+.module caption,
+.inline-group h2 {
+    background: linear-gradient(135deg, #251D42, #33295A);
+    font-size: 12px;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    color: #C4B5FD;
+    padding: 8px 12px;
+    border: none;
+}
+
+.module h2 {
+    background: linear-gradient(135deg, #251D42, #33295A);
+    color: #F5F3FF;
+    padding: 8px 14px;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+/* --- Content area --- */
+#content {
+    background: #0F0B1E;
+    padding: 20px 40px;
+}
+
+#content-main {
+    background: #0F0B1E;
+}
+
+/* --- Modules / Panels --- */
+.module {
+    background: #1A1333;
+    border: 1px solid #2D2255;
+    border-radius: 8px;
+    overflow: visible;
+    margin-bottom: 20px;
+}
+
+.module table {
+    border-collapse: collapse;
+    width: 100%;
+}
+
+/* --- Changelist layout --- */
+#changelist {
+    position: relative;
+    width: 100%;
+}
+
+#changelist .results {
+    overflow-x: auto;
+    margin-top: 12px;
+}
+
+#changelist .filtered .results,
+#changelist .filtered #toolbar,
+#changelist .filtered .actions {
+    margin-right: 280px;
+}
+
+#changelist .filtered #changelist-filter {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 240px;
+}
+
+#changelist .actions {
+    background: #1A1333;
+    border: 1px solid #2D2255;
+    border-radius: 8px;
+    padding: 10px 14px;
+    margin-bottom: 12px;
+    color: #C4B5FD;
+}
+
+#changelist .actions label {
+    color: #C4B5FD;
+}
+
+#changelist .actions select {
+    background: #251D42;
+    border: 1px solid #3D3270;
+    color: #F5F3FF;
+    border-radius: 6px;
+    padding: 6px 10px;
+}
+
+/* --- Dashboard modules --- */
+.dashboard #content-main .module table th {
+    background: #251D42;
+    color: #C4B5FD;
+    font-weight: 600;
+}
+
+.dashboard #content-main .module table td {
+    border-bottom: 1px solid #2D2255;
+}
+
+.dashboard #content-main .module table td a:link,
+.dashboard #content-main .module table td a:visited {
+    color: #A78BFA;
+}
+
+/* --- Sidebar (Recent actions) --- */
+#content-related {
+    background: #0F0B1E;
+}
+
+#content-related .module {
+    background: #1A1333;
+    border: 1px solid #2D2255;
+    border-radius: 8px;
+}
+
+#content-related .module h2 {
+    background: linear-gradient(135deg, #7C3AED, #6D28D9);
+    color: #F5F3FF;
+    border-radius: 8px 8px 0 0;
+}
+
+#content-related .actionlist li {
+    color: #C4B5FD;
+    border-bottom: 1px solid #2D2255;
+    padding: 8px 12px;
+}
+
+/* --- Buttons --- */
+.button,
+input[type="submit"],
+input[type="button"],
+.submit-row input,
+a.button {
+    background: linear-gradient(135deg, #7C3AED, #6D28D9);
+    color: #F5F3FF;
+    border: none;
+    border-radius: 6px;
+    padding: 8px 18px;
+    font-family: 'Inter', sans-serif;
+    font-weight: 600;
+    font-size: 13px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    box-shadow: 0 2px 8px rgba(124, 58, 237, 0.3);
+}
+
+.button.default,
+input[type="submit"].default,
+.submit-row input.default {
+    background: linear-gradient(135deg, #7C3AED, #6D28D9);
+    box-shadow: 0 4px 12px rgba(124, 58, 237, 0.4);
+}
+
+.button:active,
+input[type="submit"]:active,
+input[type="button"]:active,
+.button:focus,
+input[type="submit"]:focus,
+input[type="button"]:focus,
+.button:hover,
+input[type="submit"]:hover,
+input[type="button"]:hover {
+    background: linear-gradient(135deg, #6D28D9, #5B21B6);
+    box-shadow: 0 4px 16px rgba(124, 58, 237, 0.5);
+    transform: translateY(-1px);
+}
+
+.button.default:active,
+input[type="submit"].default:active,
+.button.default:focus,
+input[type="submit"].default:focus,
+.button.default:hover,
+input[type="submit"].default:hover {
+    background: linear-gradient(135deg, #6D28D9, #5B21B6);
+}
+
+/* Delete / danger buttons */
+.deletelink,
+.button.cancel-link {
+    background: linear-gradient(135deg, #FB7185, #EF4444) !important;
+    color: #fff !important;
+}
+
+/* --- Filter sidebar --- */
+#changelist-filter {
+    background: #1A1333;
+    border: 1px solid #2D2255;
+    border-radius: 8px;
+}
+
+#changelist-filter h2 {
+    background: linear-gradient(135deg, #7C3AED, #6D28D9);
+    color: #F5F3FF;
+    padding: 10px 14px;
+    font-size: 13px;
+    font-weight: 600;
+    border-radius: 8px 8px 0 0;
+}
+
+#changelist-filter h3 {
+    color: #C4B5FD;
+    font-weight: 600;
+    border-bottom: 1px solid #2D2255;
+    padding-bottom: 6px;
+    margin-bottom: 6px;
+}
+
+#changelist-filter ul li a:link,
+#changelist-filter ul li a:visited {
+    color: #C4B5FD;
+}
+
+#changelist-filter ul li.selected a {
+    color: #F472B6;
+    font-weight: 600;
+}
+
+/* --- Tables --- */
+#result_list {
+    margin: 16px 0;
+}
+
+#result_list table {
+    background: #1A1333;
+    border: 1px solid #2D2255;
+    border-radius: 8px;
+    width: 100%;
+    border-spacing: 0;
+    overflow: hidden;
+}
+
+#result_list table thead th {
+    background: #251D42;
+    color: #C4B5FD;
+    border-bottom: 2px solid #7C3AED;
+    padding: 10px 12px;
+    font-weight: 600;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+#result_list table tbody tr:nth-child(odd) {
+    background: #1A1333;
+}
+
+#result_list table tbody tr:nth-child(even) {
+    background: #201840;
+}
+
+#result_list table tbody tr:hover {
+    background: #2D2255;
+}
+
+#result_list table td,
+#result_list table th {
+    color: #F5F3FF;
+    border-bottom: 1px solid #2D2255;
+    padding: 10px 12px;
+}
+
+#result_list table td a:link,
+#result_list table td a:visited {
+    color: #A78BFA;
+    font-weight: 500;
+}
+
+/* --- Form rows --- */
+.form-row {
+    border-bottom-color: #2D2255;
+    padding: 12px;
+    color: #F5F3FF;
+}
+
+.form-row label {
+    color: #C4B5FD;
+    font-weight: 600;
+}
+
+fieldset .form-row {
+    border-bottom-color: #2D2255;
+}
+
+/* --- Inputs --- */
+input[type="text"],
+input[type="password"],
+input[type="email"],
+input[type="url"],
+input[type="number"],
+input[type="date"],
+textarea,
+select {
+    background: #251D42;
+    border: 1px solid #3D3270;
+    color: #F5F3FF;
+    border-radius: 6px;
+    padding: 8px 12px;
+    font-family: 'Inter', sans-serif;
+    transition: border-color 0.2s;
+}
+
+input[type="text"]:focus,
+input[type="password"]:focus,
+textarea:focus,
+select:focus {
+    border-color: #7C3AED;
+    box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.15);
+    outline: none;
+}
+
+/* --- Submit row --- */
+.submit-row {
+    background: #1A1333;
+    border: 1px solid #2D2255;
+    border-radius: 8px;
+    padding: 12px 16px;
+    margin: 16px 0;
+    overflow: visible;
+}
+
+/* --- Fieldsets --- */
+fieldset {
+    background: #1A1333;
+    border: 1px solid #2D2255;
+    border-radius: 8px;
+    margin-bottom: 16px;
+}
+
+fieldset .module {
+    border: none;
+    margin-bottom: 0;
+}
+
+/* --- Pagination --- */
+.paginator {
+    background: #1A1333;
+    border: 1px solid #2D2255;
+    color: #C4B5FD;
+    border-radius: 8px;
+    padding: 10px 16px;
+    margin-top: 16px;
+}
+
+.paginator a:link,
+.paginator a:visited {
+    color: #A78BFA;
+    padding: 4px 10px;
+    border-radius: 4px;
+}
+
+.paginator a:hover {
+    background: #251D42;
+}
+
+/* --- Object tools (add / history etc.) --- */
+.object-tools a:link,
+.object-tools a:visited {
+    background: linear-gradient(135deg, #251D42, #33295A);
+    border: 1px solid #3D3270;
+    border-radius: 20px;
+    color: #A78BFA;
+    padding: 6px 14px;
+    font-size: 12px;
+    font-weight: 500;
+}
+
+.object-tools a:hover {
+    background: #33295A;
+    color: #F472B6;
+    border-color: #7C3AED;
+}
+
+/* --- Changelist toolbar / search --- */
+#toolbar,
+#changelist #toolbar {
+    background: #1A1333;
+    border: 1px solid #2D2255;
+    border-radius: 8px;
+    padding: 10px 14px;
+    margin-bottom: 16px;
+}
+
+#toolbar form #searchbar {
+    background: #251D42;
+    border: 1px solid #3D3270;
+    color: #F5F3FF;
+    border-radius: 6px;
+    padding: 8px 12px;
+}
+
+#toolbar form #searchbar:focus {
+    border-color: #7C3AED;
+    box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.15);
+}
+
+/* --- Messages --- */
+.messagelist li {
+    border-radius: 6px;
+    font-weight: 500;
+    margin-bottom: 8px;
+}
+
+.messagelist li.success {
+    background: rgba(45, 212, 191, 0.15);
+    color: #2DD4BF;
+    border: 1px solid rgba(45, 212, 191, 0.3);
+}
+
+.messagelist li.error {
+    background: rgba(251, 113, 133, 0.15);
+    color: #FB7185;
+    border: 1px solid rgba(251, 113, 133, 0.3);
+}
+
+.messagelist li.warning {
+    background: rgba(251, 191, 36, 0.15);
+    color: #FBBF24;
+    border: 1px solid rgba(251, 191, 36, 0.3);
+}
+
+/* --- Calendar & date picker --- */
+.calendarbox {
+    background: #1A1333;
+    border: 1px solid #2D2255;
+    border-radius: 8px;
+}
+
+.calendar caption {
+    background: #251D42;
+    color: #C4B5FD;
+}
+
+.calendar td a:link,
+.calendar td a:visited {
+    color: #A78BFA;
+}
+
+/* --- Inline related objects --- */
+.inline-related {
+    background: #1A1333;
+    border: 1px solid #2D2255;
+    border-radius: 8px;
+    margin-bottom: 12px;
+}
+
+.inline-related h3 {
+    background: #251D42;
+    color: #C4B5FD;
+    padding: 8px 12px;
+}
+
+/* --- Help text --- */
+.help,
+p.help {
+    color: #8B7FC7;
+    font-size: 12px;
+}
+
+/* --- Footer --- */
+#footer {
+    background: #0F0B1E;
+    border-top: 1px solid #2D2255;
+    color: #8B7FC7;
+    padding: 12px;
+    text-align: center;
+    font-size: 12px;
+}
+
+/* --- Selection checkboxes --- */
+input[type="checkbox"] {
+    accent-color: #7C3AED;
+}
+
+/* --- Admin nav sidebar (Django 3.1+) --- */
+nav.sticky {
+    background: #1A1333;
+}
+
+.main > .sidebar {
+    background: #1A1333;
+    border-right: 1px solid #2D2255;
+}
+
+.main > .sidebar .module h3 {
+    color: #C4B5FD;
+    font-weight: 600;
+    padding: 8px 16px;
+}
+
+.main > .sidebar .module ul li a:link,
+.main > .sidebar .module ul li a:visited {
+    color: #A78BFA;
+    padding: 6px 16px;
+    display: block;
+    transition: background 0.15s;
+}
+
+.main > .sidebar .module ul li a:hover {
+    background: #251D42;
+    color: #F472B6;
+}
+
+.main > .sidebar .current-app a {
+    color: #F472B6 !important;
+    font-weight: 600;
+}
+
+/* --- Toggle nav button --- */
+.toggle-nav-sidebar {
+    background: #251D42;
+    border-color: #3D3270;
+    color: #A78BFA;
+}
+
+.toggle-nav-sidebar:hover {
+    background: #33295A;
+    color: #F472B6;
+}
+
+/* --- Change form layout --- */
+#content h1 {
+    color: #F5F3FF;
+    font-family: 'Inter', sans-serif;
+    font-weight: 700;
+    margin-bottom: 16px;
+}
+
+.object-tools {
+    margin-bottom: 16px;
+}
+
+/* --- Clear floats properly --- */
+#content::after {
+    content: "";
+    display: table;
+    clear: both;
+}
+
+/* --- Responsive adjustments --- */
+@media (max-width: 1024px) {
+    #content {
+        padding: 16px 20px;
+    }
+
+    #changelist .filtered .results,
+    #changelist .filtered #toolbar,
+    #changelist .filtered .actions {
+        margin-right: 0;
+    }
+
+    #changelist .filtered #changelist-filter {
+        position: static;
+        width: 100%;
+        margin-bottom: 16px;
+    }
+}

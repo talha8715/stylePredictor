@@ -1,0 +1,385 @@
+
+
+{% extends 'Dbase.html' %}
+
+{% block con %}
+<!-- ================ tab pills ==================== -->
+{% endblock %}
+
+{% block content %}
+
+
+
+<section class="section about-2" id="pricing">
+	<div class="container">
+		<div class="row" style = "padding-bottom: 40px;">
+			<!-- section title -->
+		</br>
+		<div class="title text-center wow fadeIn" data-wow-duration="1500ms" >
+			<h2>Text <span class="color">Classification</span> </h2>
+			<div class="border"></div>
+		</div>
+		<!-- /section title -->
+		<div class="tab">
+			<button class="tablinks"  onclick="openCity(event, 'London')" id="defaultOpen">Dress Type</button>
+			<button class="tablinks" onclick="openCity(event, 'Paris')">Fashion</button>
+			<button class="tablinks" onclick="openCity(event, 'Tokyo')">Dress</button>
+		</div>
+
+		<!-- Contact Details -->
+
+		<div id="London" class="tabcontent">
+			<span onclick="this.parentElement.style.display='none'" class="topright">&times</span>
+			<div class="contact-form col-md-12 wow fadeInUp" data-wow-duration="500ms" data-wow-delay="300ms">
+				<br>
+				<form id="contact-form" action="" method="post" accept-charset="utf-8">
+
+					{% csrf_token %}
+
+					<div class="form-group">
+						<label for="gender">Your Gender</label>
+						<select name="gender" id="gender" class="form-control">
+							<option  value="Male">Male</option>
+							<option value="Female">Female</option>
+
+						</select>
+					</div>
+
+					<div class="form-group">
+						<label for="age">Your Age</label>
+						<input type="number" name="age" value="" placeholder="Between 17 to 28" class="form-control">
+					</div>
+
+					<div class="form-group">
+						<label for="fabric">which Fabric would you Prefer ?</label>
+
+						<select name="fabric" id="fabric" class="form-control">
+							<option value="">Select Fabric</option>
+							<option value="1">Linen</option>
+							<option value="2">Velvet</option>
+							<option value="3">Lawn</option>
+							<option value="4">Wool</option>
+							<option value="5">Washingwear</option>
+							<option value="6">Cotton</option>
+							<option value="7">Nylon</option>
+							<option value="8">Silk</option>
+						</select>
+					</div>
+
+					<div class="form-group">
+						<label for="color">Select Dress Color</label>
+
+						<select name="color" id="color" class="form-control">
+							<option value="">Select Color</option>
+							<option value="1">Sky_Blue</option>
+							<option value="2">Violet</option>
+							<option value="3">Mehroon</option>
+							<option value="4">White</option>
+							<option value="5">Grey</option>
+							<option value="6">Black</option>
+							<option value="7">Brown</option>
+							<option value="8">Dark_Blue</option>
+						</select>
+					</div>
+
+					<div class="form-group">
+						<label for="quality">How much you prefer Quality ?</label>
+						<select name="quality" id="quality" class="form-control">
+							<option value="">Select Quality</option>
+							<option value="2">Low</option>
+							<option value="3">Below Average</option>
+							<option value="4">Average</option>
+							<option value="5">Above Average</option>
+							<option value="6">High</option>
+							<option value="7">Excellent</option>
+						</select>
+					</div>
+
+					<div class="form-group">
+						<label for="comfort">Comfort Preference</label>
+
+						<select name="comfort" id="comfort" class="form-control">
+							<option value="">Select Between 1 to 8</option>
+							<option value="1">1</option>
+							<option value="2">2</option>
+							<option value="3">3</option>
+							<option value="4">4</option>
+							<option value="5">5</option>
+							<option value="6">6</option>
+							<option value="7">7</option>
+							<option value="8">8</option>
+						</select>
+					</div>
+
+					<div class="form-group">
+						<label for="brand">Brand Type</label>
+
+						<select name="brand" id="brand" class="form-control">
+							<option value="">Select type</option>
+							<option value="1">Local</option>
+							<option value="3">Hand-made</option>
+							<option value="6">Luxury</option>
+							<option value="8">Imported</option>
+						</select>
+					</div>
+
+					<br>
+					<div id="cf-submit">
+						<input class="btn btn-transparent" id="contact-submit" type="submit" name="Submit_1" value="Submit">
+					</div>
+
+				</form>
+			</div>
+			<!-- / End Contact Details -->
+
+			<div class="col-md-12 padding-0 ">
+				
+				<h2 class="text-center" style="font-weight:700;">Predicted Dress Category is : <span class="text-accent">{{target}}</span></h2>
+			</div>
+			<!-- ./End Contact Form -->
+
+		</div>
+
+		<div id="Paris" class="tabcontent">
+			<span onclick="this.parentElement.style.display='none'" class="topright">&times;</span>
+			<div class="contact-form col-md-12 wow fadeInUp" data-wow-duration="500ms" data-wow-delay="300ms">
+				<br>
+				<form id="contact-form" action="" method="post" accept-charset="utf-8">
+
+					{% csrf_token %}
+
+					<div class="form-group">
+						<label for="gender">Your Gender</label>
+						<select name="gender" id="gender" class="form-control">
+							<option  value="Male">Male</option>
+							<option value="Female">Female</option>
+
+						</select>
+					</div>
+
+					<div class="form-group">
+						<label for="age">Your Age</label>
+						<input type="number" name="age" value="" placeholder="Between 17 to 28" class="form-control">
+					</div>
+
+					<div class="form-group">
+						<label for="profession">Profession</label>
+
+						<select name="profession" id="profession" class="form-control">
+							<option value="">Select Profession</option>
+							<option value="1">Engineer</option>
+							<option value="2">Pilot</option>
+							<option value="3">Farmer</option>
+							<option value="4">Lawyer</option>
+							<option value="5">Teacher</option>
+							<option value="6">Doctor</option>
+							<option value="7">Businessman</option>
+							<option value="8">Student</option>
+						</select>
+					</div>
+
+					<div class="form-group">
+						<label for="education">Level of Education</label>
+
+						<select name="education" id="education" class="form-control">
+							<option value="">Select Education</option>
+							<option value="1">Not Educated</option>
+							<option value="2">Matriculation</option>
+							<option value="4">Intermediate</option>
+							<option value="6">Bachelor's</option>
+							<option value="7">Master's</option>
+							<option value="8">PhD</option>
+						</select>
+					</div>
+
+					<div class="form-group">
+						<label for="weather">Weather Condition</label>
+						<select name="weather" id="weather" class="form-control">
+							<option value="">Select Weather</option>
+							<option value="1">Autumn</option>
+							<option value="3">Summer</option>
+							<option value="5">Rainy</option>
+							<option value="7">Winter</option>
+							<option value="8">Spring</option>
+						</select>
+					</div>
+
+					<div class="form-group">
+						<label for="culture">your Culture</label>
+
+						<select name="culture" id="culture" class="form-control">
+							<option value="">Select your Culture</option>
+							<option value="2">Balochi</option>
+							<option value="4">Pakhton</option>
+							<option value="6">Sindhi</option>
+							<option value="7">Saraiki</option>
+							<option value="8">Punjabi</option>
+						</select>
+					</div>
+
+					<div class="form-group">
+						<label for="style">Dressing Style you wear</label>
+
+						<select name="style" id="style" class="form-control">
+							<option value="">Select Dress Style</option>
+							<option value="1">Texture</option>
+							<option value="3">Lines</option>
+							<option value="5">Check</option>
+							<option value="7">Printed</option>
+							<option value="8">Plain</option>
+						</select>
+					</div>
+
+					<br>
+					<div id="cf-submit">
+						<input class="btn btn-transparent" id="contact-submit" type="submit" name="Submit_2" value="Submit">
+					</div>
+
+				</form>
+			</div>
+			<!-- / End Contact Details -->
+			
+			<div class="col-md-12 padding-0 ">
+				
+				<h2 class="text-center" style="font-weight:700;">Predicted Event is : <span class="text-accent">{{target2}}</span></h2>
+			</div>
+			<!-- ./End Contact Form -->
+
+		</div>
+
+		<div id="Tokyo" class="tabcontent">
+			<span onclick="this.parentElement.style.display='none'" class="topright">&times</span>
+			<div class="contact-form col-md-12 wow fadeInUp" data-wow-duration="500ms" data-wow-delay="300ms">
+				<br>
+				<form id="contact-form" action="" method="post" accept-charset="utf-8">
+
+					{% csrf_token %}
+
+					<div class="form-group">
+						<label for="gender">Your Gender</label>
+						<select name="gender" id="gender" class="form-control">
+							<option  value="Male">Male</option>
+							<option value="Female">Female</option>
+
+						</select>
+					</div>
+
+					<div class="form-group">
+						<label for="age">Your Age</label>
+						<input type="number" name="age" value="" placeholder="Between 17 to 28" class="form-control">
+					</div>
+
+					<div class="form-group">
+						<label for="comfort">Comfort Preference</label>
+
+						<select name="comfort" id="comfort" class="form-control">
+							<option value="">Select Between 1 to 8</option>
+							<option value="1">1</option>
+							<option value="2">2</option>
+							<option value="3">3</option>
+							<option value="4">4</option>
+							<option value="5">5</option>
+							<option value="6">6</option>
+							<option value="7">7</option>
+							<option value="8">8</option>
+						</select>
+					</div>
+
+					<div class="form-group">
+						<label for="color">Select Dress Color</label>
+
+						<select name="color" id="color" class="form-control">
+							<option value="">Select Color</option>
+							<option value="1">Sky_Blue</option>
+							<option value="2">Violet</option>
+							<option value="3">Mehroon</option>
+							<option value="4">White</option>
+							<option value="5">Grey</option>
+							<option value="6">Black</option>
+							<option value="7">Brown</option>
+							<option value="8">Dark_Blue</option>
+						</select>
+					</div>
+
+					<div class="form-group">
+						<label for="quality">How much you prefer Quality ?</label>
+						<select name="quality" id="quality" class="form-control">
+							<option value="">Select Quality</option>
+							<option value="2">Low</option>
+							<option value="3">Below Average</option>
+							<option value="4">Average</option>
+							<option value="5">Above Average</option>
+							<option value="6">High</option>
+							<option value="7">Excellent</option>
+						</select>
+					</div>
+
+					<div class="form-group">
+						<label for="etype">Event Type</label>
+
+						<select name="etype" id="etype" class="form-control">
+							<option value="">Select Event</option>
+							<option value="2">Party</option>
+							<option value="4">Wedding Cermony</option>
+							<option value="5">Social</option>
+							<option value="7">Cultural</option>
+							<option value="8">Religious</option>
+						</select>
+					</div>
+
+					<div class="form-group">
+						<label for="epriority">Event Priority</label>
+
+						<select name="epriority" id="epriority" class="form-control">
+							<option value="">Select Priority</option>
+							<option value="1">Low</option>
+							<option value="5">Average</option>
+							<option value="8">High</option>
+						</select>
+					</div>
+
+					<br>
+					<div id="cf-submit">
+						<input class="btn btn-transparent" id="contact-submit" type="submit" name="Submit_3" value="Submit">
+					</div>
+
+				</form>
+			</div>
+			<!-- / End Contact Details -->
+			
+			<div class="col-md-12 padding-0 ">
+				
+				<h2 class="text-center" style="font-weight:700;">Predicted Dress is : <span class="text-accent">{{target3}}</span></h2>
+			</div>
+			<!-- ./End Contact Form -->
+
+		</div>
+	</div>
+</div>
+</section>
+
+{% endblock %}
+
+{% block scr %}
+
+<script>
+	function openCity(evt, cityName) {
+		var i, tabcontent, tablinks;
+		tabcontent = document.getElementsByClassName("tabcontent");
+		for (i = 0; i < tabcontent.length; i++) {
+			tabcontent[i].style.display = "none";
+		}
+		tablinks = document.getElementsByClassName("tablinks");
+		for (i = 0; i < tablinks.length; i++) {
+			tablinks[i].className = tablinks[i].className.replace(" active", "");
+		}
+		document.getElementById(cityName).style.display = "block";
+		evt.currentTarget.className += " active";
+	}
+
+// Get the element with id="defaultOpen" and click on it
+document.getElementById("defaultOpen").click();
+</script>
+
+{% endblock %}
+

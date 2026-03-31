@@ -1,0 +1,141 @@
+{% extends 'Dbase.html' %}
+
+{% block con %}
+<style>
+  .abc:hover{background-color: var(--bg-surface, #27272A);}
+</style>
+
+<script src="Scripts/jquery-1.10.2.min.js"></script>
+<script type="text/javascript">
+$(document).ready(function () {
+$("input[name='checkedbox']").change(function () {
+alert($(this).val());
+});
+});
+</script>
+{% endblock %}
+
+
+{% block content %}
+
+<!-- Srart Contact Us
+  =========================================== -->   
+  <section id="contact-us" class="contact-us section-bg">
+    <div class="container">
+      <div class="row">
+
+        <!-- section title -->
+        <div class="title text-center wow fadeIn" data-wow-duration="500ms">
+          <h2>Dress <span class="color">Plan</span></h2>
+          <div class="border"></div>
+        </div>
+        <!-- /section title -->
+
+        <!-- Contact Details -->
+        <div class="contact-form col-md-6 wow fadeInUp" data-wow-duration="500ms" data-wow-delay="300ms">
+          <form id="contact-form" action="" method="post" accept-charset="utf-8">
+
+            {% csrf_token %}
+
+            <div class="form-group">
+              <label for="title">Title of the Plan</label>
+
+              <input type="text" name="title" value="" placeholder="Title" class="form-control">
+            </div>
+            
+            <div class="form-group">
+              <label for="date">Date for the Event</label>
+              <br>
+              <input type="date" name="date" value="" placeholder="Date" class="form-control">
+            </div>
+            <div class="form-group">
+              <label for="time">Time for the Event</label>
+              <br>
+              <input type="time" name="time" value="" placeholder="Time" class="form-control">
+            </div>
+
+            <div class="form-group">
+              <label for="events">Choose a Event</label>
+
+              <select name="event" id="event" class="form-control">
+                <option value="Cultural">Cultural</option>
+                <option value="Religious">Religious</option>
+                <option value="Social">Social</option>
+
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="priority">Priority Level of Event ?</label>
+
+              <select name="priority" id="priority" class="form-control">
+                <option value="Yes">Low</option>
+                <option value="No">Medium</option>
+                <option value="No">High</option>
+
+              </select>
+            </div>
+            <br>
+            <div id="cf-submit" class="col-md-6 padding-2 ">
+              <input class="btn btn-transparent" id="contact-submit" type="submit" name="taskAdd" value="Add task">
+            </div>
+            <div id="cf-submit" class="col-md-6 padding-2 ">
+              <input class="btn btn-transparent" style="background:var(--bg-surface) !important;border:1px solid var(--border-light) !important;" id="contact-submit" type="submit" name="taskDelete" formnovalidate="" value="Delete Tasks" onclick="$('input#sublist').click();">
+            </div>
+            <!-- <div class="row">
+                    <button class="taskAdd" name="taskAdd" type="submit"><i class="fa fa-plus icon"></i>Add task</button>
+                    <button class="taskDelete" name="taskDelete" formnovalidate="" type="submit" onclick="$('input#sublist').click();"><i class="fa fa-trash-o icon"></i>Delete Tasks</button>
+            </div> -->
+
+            <ul  class="taskList">
+            {% for todo in todos %} <!-- django template lang - for loop -->
+                <li class="taskItem">
+                    <input type="radio" class="taskCheckbox" name="checkedbox" id="{{ todo.id }}" value="{{ todo.id }}">
+                    <label for="{{ todo.id }}"><span class="complete-">{{ todo.title }}</span></label>
+                    <span class="event-{{ todo.event }}">{{ todo.event }}</span>
+                    <strong class="taskDate"><i class="fa fa-calendar"></i>{{ todo.created }} - {{ todo.due_date }}</strong>
+                </li>
+            {% endfor %}
+            
+            
+            </ul><!-- taskList -->
+
+          </form>
+        </div>
+        <!-- / End Contact Details -->
+        
+        <div class="col-md-6 padding-0 ">
+          <br>
+          <br>
+         <div class="card-body">
+                <table class="table text-left">
+                    <thead class="thead-light" class="text-accent" style="font-weight: bold;">
+                        <tr>
+                            <th scope="col"></th>
+                            <th scope="col">Title</th>
+                            <th scope="col">Event</th>
+                            <th scope="col">Due_Date</th>
+                            <th scope="col">Time</th>
+                        </tr>
+                    </thead>
+                    <tbody style="color:white;">
+                        {% for todo in todos %}
+                        <tr class="taskItem abc">
+                          <td ><input type="radio" class="taskCheckbox" name="checkedbox" id="{{ todo.id }}" value="{{ todo.id }}"></td>
+                            <td>{{ todo.title }}</td>
+                            <td>{{ todo.event }}</td>
+                            <td>{{ todo.due_date }}</td>
+                            <td>{{ todo.time }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+
+            </div>
+        <!-- ./End Contact Form -->
+
+      </div> <!-- end row -->
+    </div> <!-- end container -->
+
+  </section> <!-- end section -->
+
+  {% endblock %}

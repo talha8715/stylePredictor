@@ -1,0 +1,63 @@
+{% extends 'Base.html' %}
+{% load humanize %}
+{% block title %}{{ block.super }} | {{ object.title }}{% endblock title %}
+{% block content %}
+
+<div class="row">
+    <div class="col-lg-8 my-4">
+        <div class="glass-card mb-4">
+            <h1 style="font-size:2rem;font-weight:800;margin-bottom:0.5rem;">{{ object.title }}</h1>
+            <p style="color:var(--text-muted);font-size:0.9rem;">
+                <i class="far fa-user mr-1"></i>
+                {% if object.user.get_full_name %}
+                {{ object.user.get_full_name }}
+                {% else %}
+                <a href="/?author={{ object.user }}">{{ object.user.username }}</a>
+                {% endif %}
+                &middot; <i class="far fa-clock mr-1"></i> {{ object.created_at|naturaltime }}
+            </p>
+        </div>
+
+        <img class="img-fluid rounded mb-4" style="width:100%;max-height:500px;object-fit:cover;border-radius:var(--radius-lg) !important;" src="{{ object.image.url }}" alt="{{ object.title }}">
+
+        <div class="glass-card mb-4">
+            <p style="font-size:1.05rem;line-height:1.8;">{{ object.details }}</p>
+
+            <div class="table-responsive">
+            <table class="table table-bordered mt-3" style="font-size:0.9rem;">
+                <tbody>
+                    <tr><td style="font-weight:600;width:120px;">Category</td><td>{{ object.categories }}</td></tr>
+                    <tr><td style="font-weight:600;">Event</td><td>{{ object.event }}</td></tr>
+                    <tr><td style="font-weight:600;">Tag</td><td><span class="text-accent">#{{ object.tag }}</span></td></tr>
+                    <tr><td style="font-weight:600;">Likes</td><td><i class="fas fa-heart mr-1" style="color:var(--rose);"></i> {{ object.likes_count }}</td></tr>
+                </tbody>
+            </table>
+            </div>
+        </div>
+
+        <!-- Comment Form -->
+        <div class="glass-card mb-4">
+            <h5 style="font-weight:700;margin-bottom:1rem;"><i class="fas fa-comment mr-1"></i> Leave a Comment</h5>
+            <form action="." method="POST">
+                {% csrf_token %}
+                <input type="hidden" name='slug' value="{{ object.slug }}">
+                <textarea name="comment" class="form-control" rows="3" required placeholder="Write your comment..."></textarea>
+                <button type="submit" class="btn btn-primary mt-2"><i class="fas fa-paper-plane mr-1"></i> Submit</button>
+            </form>
+        </div>
+
+        <!-- Comments -->
+        {% if object.comments.all %}
+        {% for comment in object.comments.all %}
+        <div class="media mb-3" style="padding:1rem;background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-md);">
+            <img class="d-flex mr-3 rounded-circle comment_pic" src="{{ comment.user.profile.image.url }}" alt="Image">
+            <div class="media-body">
+                <h6 style="font-weight:600;margin-bottom:0.25rem;">{{ comment.user.get_full_name }}</h6>
+                <p style="margin-bottom:0.25rem;">{{ comment.text }}</p>
+                <small style="color:var(--text-muted);"><i class="far fa-clock"></i> {{ comment.created_at }}</small>
+            </div>
+        </div>
+        {% endfor %}
+        {% endif %}
+    </div>
+{% endblock content %}

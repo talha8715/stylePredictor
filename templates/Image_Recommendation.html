@@ -1,0 +1,529 @@
+{% extends 'Dbase.html' %}
+
+{% block con %}
+<meta name="viewport" content="width=device-width, initial-scale=1">
+{% endblock %}
+
+
+{% block content %}
+
+<section style="padding: 20px;" class="section about-2 padding-0" id="pricing">
+  <div class="container">
+    <div class="row" style = "padding-bottom: 40px;">
+      <!-- section title -->
+    </br>
+          <div class="title text-center wow fadeIn" data-wow-duration="1500ms" >
+            <h2>Image <span class="color">Recommendation</span> </h2>
+            <div class="border"></div>
+          </div>
+          <!-- /section title -->
+    <div class="w3-container" >
+
+      <div class="w3-bar w3-black">
+        <button class="w3-bar-item w3-button tablink btn btn-danger" onclick="openCity(event,'Shirt') " >Shirt</button>
+        <button class="w3-bar-item w3-button tablink btn btn-danger"  onclick="openCity(event,'Pent')">Pent</button>
+        <button class="w3-bar-item w3-button tablink btn btn-danger"  onclick="openCity(event,'Jacket')">Jacket</button>
+        <button class="w3-bar-item w3-button tablink btn btn-danger"  onclick="openCity(event,'Sweater')">Sweater</button>
+        <button class="w3-bar-item w3-button tablink btn btn-danger"  onclick="openCity(event,'Shoes')">Shoes</button>
+        <button class="w3-bar-item w3-button tablink btn btn-danger" onclick="openCity(event,'Kurti')">Kurti</button>
+        <button class="w3-bar-item w3-button tablink btn btn-danger"  onclick="openCity(event,'Saree')">Saree</button>
+
+      </div>
+      
+
+    <form action="" method="post"  enctype="multipart/form-data">
+
+              {% csrf_token %}
+    <div id="Shirt" class="w3-container w3-border city">  
+      <br>
+    <input 
+      type="radio" name="user_image" 
+      id="one" value="16530" class="input-hidden" />
+    <label for="one">
+      <img
+        src="../media/Recommender_Dataset/images/16530.jpg" 
+        alt="Shirt" />
+    </label>
+
+    <input 
+      type="radio" name="user_image"
+      id="two" value="31581" class="input-hidden" />
+    <label for="two">
+      <img 
+        src="../media/Recommender_Dataset/images/31581.jpg" 
+        alt="Shirt" />
+    </label>
+
+    <input 
+      type="radio" name="user_image" 
+      id="three" value="37212" class="input-hidden" />
+    <label for="three">
+      <img 
+        src="../media/Recommender_Dataset/images/37212.jpg" 
+        alt="Shirt" />
+    </label>
+
+    <input 
+      type="radio" name="user_image" 
+      id="four" value="12367" class="input-hidden" />
+    <label for="four">
+      <img 
+        src="../media/Recommender_Dataset/images/12367.jpg" 
+        alt="Shirt" />
+    </label>
+
+    <input 
+      type="radio" name="user_image" 
+      id="five" value="14090" class="input-hidden" />
+    <label for="five">
+      <img 
+        src="../media/Recommender_Dataset/images/14090.jpg" 
+        alt="Shirt" />
+    </label>
+
+    <br>
+    <br>
+    <div class="mt-3">
+      <button type="submit" name="Submit" class="btn btn-primary" >Submit</button>
+    </div>
+    <br>
+    </div>
+    </form>
+
+
+
+    <form action="" method="post"  enctype="multipart/form-data">
+
+              {% csrf_token %}
+    <div id="Pent" class="w3-container w3-border city" style="display:none">  
+      <br>
+    <input 
+      type="radio" name="user_image" 
+      id="one1" value="44581" class="input-hidden" />
+    <label for="one1">
+      <img 
+        src="../media/Recommender_Dataset/images/44581.jpg" 
+        alt="Pent" />
+    </label>
+
+    <input 
+      type="radio" name="user_image"
+      id="two1" value="26152" class="input-hidden" />
+    <label for="two1">
+      <img 
+        src="../media/Recommender_Dataset/images/26152.jpg" 
+        alt="Pent" />
+    </label>
+
+    <input 
+      type="radio" name="user_image" 
+      id="three1" value="41694" class="input-hidden" />
+    <label for="three1">
+      <img 
+        src="../media/Recommender_Dataset/images/41694.jpg" 
+        alt="Pent" />
+    </label>
+
+    <input 
+      type="radio" name="user_image" 
+      id="four1" value="7707" class="input-hidden" />
+    <label for="four1">
+      <img 
+        src="../media/Recommender_Dataset/images/7707.jpg" 
+        alt="Pent" />
+    </label>
+
+    <input 
+      type="radio" name="user_image" 
+      id="five1" value="54983" class="input-hidden" />
+    <label for="five1">
+      <img 
+        src="../media/Recommender_Dataset/images/54983.jpg" 
+        alt="Pent" />
+    </label>
+
+    <br>
+    <br>
+    <div class="mt-3">
+      <button type="submit" name="Submit" class="btn btn-primary" >Submit</button>
+    </div>
+    <br>
+    </div>
+    </form>
+
+
+
+
+    <form action="" method="post"  enctype="multipart/form-data">
+
+              {% csrf_token %}
+    <div id="Jacket" class="w3-container w3-border city" style="display:none">  
+      <br>
+    <input 
+      type="radio" name="user_image" 
+      id="one2" value="19342" class="input-hidden" />
+    <label for="one2">
+      <img 
+        src="../media/Recommender_Dataset/images/19342.jpg" 
+        alt="Jacket" />
+    </label>
+
+    <input 
+      type="radio" name="user_image"
+      id="two2" value="6880" class="input-hidden" />
+    <label for="two2">
+      <img 
+        src="../media/Recommender_Dataset/images/6880.jpg" 
+        alt="Jacket" />
+    </label>
+
+    <input 
+      type="radio" name="user_image" 
+      id="three2" value="16190" class="input-hidden" />
+    <label for="three2">
+      <img 
+        src="../media/Recommender_Dataset/images/16190.jpg" 
+        alt="Jacket" />
+    </label>
+
+    <input 
+      type="radio" name="user_image" 
+      id="four2" value="19744" class="input-hidden" />
+    <label for="four2">
+      <img 
+        src="../media/Recommender_Dataset/images/19744.jpg" 
+        alt="Jacket" />
+    </label>
+
+    <input 
+      type="radio" name="user_image" 
+      id="five2" value="18201" class="input-hidden" />
+    <label for="five2">
+      <img 
+        src="../media/Recommender_Dataset/images/18201.jpg" 
+        alt="Jacket" />
+    </label>
+
+    <br>
+    <br>
+    <div class="mt-3">
+      <button type="submit" name="Submit" class="btn btn-primary" >Submit</button>
+    </div>
+    <br>
+    </div>
+    </form>
+
+
+
+    <form action="" method="post"  enctype="multipart/form-data">
+
+              {% csrf_token %}
+    <div id="Sweater" class="w3-container w3-border city" style="display:none">  
+      <br>
+    <input 
+      type="radio" name="user_image" 
+      id="one3" value="11172" class="input-hidden" />
+    <label for="one3">
+      <img 
+        src="../media/Recommender_Dataset/images/11172.jpg" 
+        alt="Sweater" />
+    </label>
+
+    <input 
+      type="radio" name="user_image"
+      id="two3" value="11175" class="input-hidden" />
+    <label for="two3">
+      <img 
+        src="../media/Recommender_Dataset/images/11175.jpg" 
+        alt="Sweater" />
+    </label>
+
+    <input 
+      type="radio" name="user_image" 
+      id="three3" value="19525" class="input-hidden" />
+    <label for="three3">
+      <img 
+        src="../media/Recommender_Dataset/images/19525.jpg" 
+        alt="Sweater" />
+    </label>
+
+    <input 
+      type="radio" name="user_image" 
+      id="four3" value="20232" class="input-hidden" />
+    <label for="four3">
+      <img 
+        src="../media/Recommender_Dataset/images/20232.jpg" 
+        alt="Sweater" />
+    </label>
+
+    <input 
+      type="radio" name="user_image" 
+      id="five3" value="21110" class="input-hidden" />
+    <label for="five3">
+      <img 
+        src="../media/Recommender_Dataset/images/21110.jpg" 
+        alt="Sweater" />
+    </label>
+
+    <br>
+    <br>
+    <div class="mt-3">
+      <button type="submit" name="Submit" class="btn btn-primary" >Submit</button>
+    </div>
+    <br>
+    </div>
+    </form>
+
+
+
+    <form action="" method="post"  enctype="multipart/form-data">
+
+              {% csrf_token %}
+    <div id="Shoes" class="w3-container w3-border city" style="display:none">  
+      <br>
+    <input 
+      type="radio" name="user_image" 
+      id="one4" value="20833" class="input-hidden" />
+    <label for="one4">
+      <img 
+        src="../media/Recommender_Dataset/images/20833.jpg" 
+        alt="Shoes" />
+    </label>
+
+    <input 
+      type="radio" name="user_image"
+      id="two4" value="13685" class="input-hidden" />
+    <label for="two4">
+      <img 
+        src="../media/Recommender_Dataset/images/13685.jpg" 
+        alt="Shoes" />
+    </label>
+
+    <input 
+      type="radio" name="user_image" 
+      id="three4" value="2821" class="input-hidden" />
+    <label for="three4">
+      <img 
+        src="../media/Recommender_Dataset/images/2821.jpg" 
+        alt="Shoes" />
+    </label>
+
+    <input 
+      type="radio" name="user_image" 
+      id="four4" value="42027" class="input-hidden" />
+    <label for="four4">
+      <img 
+        src="../media/Recommender_Dataset/images/42027.jpg" 
+        alt="Shoes" />
+    </label>
+
+    <input 
+      type="radio" name="user_image" 
+      id="five4" value="11925" class="input-hidden" />
+    <label for="five4">
+      <img 
+        src="../media/Recommender_Dataset/images/11925.jpg" 
+        alt="Shoes" />
+    </label>
+
+    <br>
+    <br>
+    <div class="mt-3">
+      <button type="submit" name="Submit" class="btn btn-primary" >Submit</button>
+    </div>
+    <br>
+    </div>
+    </form>
+
+
+
+    <form action="" method="post"  enctype="multipart/form-data">
+
+              {% csrf_token %}
+    <div id="Kurti" class="w3-container w3-border city" style="display:none">  
+      <br>
+    <input 
+      type="radio" name="user_image" 
+      id="one5" value="56812" class="input-hidden" />
+    <label for="one5">
+      <img 
+        src="../media/Recommender_Dataset/images/56812.jpg" 
+        alt="Kurti" />
+    </label>
+
+    <input 
+      type="radio" name="user_image"
+      id="two5" value="56649" class="input-hidden" />
+    <label for="two5">
+      <img 
+        src="../media/Recommender_Dataset/images/56649.jpg" 
+        alt="Kurti" />
+    </label>
+
+    <input 
+      type="radio" name="user_image" 
+      id="three5" value="33029" class="input-hidden" />
+    <label for="three5">
+      <img 
+        src="../media/Recommender_Dataset/images/33029.jpg" 
+        alt="Kurti" />
+    </label>
+
+    <input 
+      type="radio" name="user_image" 
+      id="four5" value="40187" class="input-hidden" />
+    <label for="four5">
+      <img 
+        src="../media/Recommender_Dataset/images/40187.jpg" 
+        alt="Kurti" />
+    </label>
+
+    <input 
+      type="radio" name="user_image" 
+      id="five5" value="56647" class="input-hidden" />
+    <label for="five5">
+      <img 
+        src="../media/Recommender_Dataset/images/56647.jpg" 
+        alt="Kurti" />
+    </label>
+
+    <br>
+    <br>
+    <div class="mt-3">
+      <button type="submit" name="Submit" class="btn btn-primary" >Submit</button>
+    </div>
+    <br>
+    </div>
+    </form>
+
+
+
+    <form action="" method="post"  enctype="multipart/form-data">
+
+              {% csrf_token %}
+    <div id="Saree" class="w3-container w3-border city" style="display:none">  
+      <br>
+    <input 
+      type="radio" name="user_image" 
+      id="one6" value="52878" class="input-hidden" />
+    <label for="one6">
+      <img 
+        src="../media/Recommender_Dataset/images/52878.jpg" 
+        alt="Saree" />
+    </label>
+
+    <input 
+      type="radio" name="user_image"
+      id="two6" value="59606" class="input-hidden" />
+    <label for="two6">
+      <img 
+        src="../media/Recommender_Dataset/images/59606.jpg" 
+        alt="Saree" />
+    </label>
+
+    <input 
+      type="radio" name="user_image" 
+      id="three6" value="57956" class="input-hidden" />
+    <label for="three6">
+      <img 
+        src="../media/Recommender_Dataset/images/57956.jpg" 
+        alt="Saree" />
+    </label>
+
+    <input 
+      type="radio" name="user_image" 
+      id="four6" value="59655" class="input-hidden" />
+    <label for="four6">
+      <img 
+        src="../media/Recommender_Dataset/images/59655.jpg" 
+        alt="Saree" />
+    </label>
+
+    <input 
+      type="radio" name="user_image" 
+      id="five6" value="59652" class="input-hidden" />
+    <label for="five6">
+      <img 
+        src="../media/Recommender_Dataset/images/59652.jpg" 
+        alt="Saree" />
+    </label>
+
+    <br>
+    <br>
+    <div class="mt-3">
+      <button type="submit" name="Submit" class="btn btn-primary" >Submit</button>
+    </div>
+    <br>
+    </div>
+    </form>
+
+</div>
+</div>
+</div>
+
+
+
+<section id="contact-us" class="contact-us section-bg">
+  <div class="container">
+    <div class="row">
+      
+      <!-- section title -->
+      <div class="title text-center wow fadeIn" data-wow-duration="500ms">
+        <h2>Recommended <span class="color">Images</span></h2>
+        <div class="border"></div>
+      </div>
+      <!-- /section title -->
+
+    
+    <div class="clearfix">
+      {% for i, s in id_score_list %}
+      <article class="col-md-4 col-sm-6 col-xs-12 clearfix wow fadeInUp" data-wow-duration="500ms">
+
+        <div class="post-block">
+          <div class="media-wrapper">
+            <img src="../media/Recommender_Dataset/images/{{i}}" alt="image" class="img-responsive">
+          </div>
+          
+          <div class="content">
+            <h3>Similarity Score: {{s}}</h3>
+          </div>
+        </div>
+                    
+      </article>
+      {% endfor %}
+
+    </div>
+
+
+      <!-- / End Contact Details -->
+        
+      
+    
+    </div> <!-- end row -->
+  </div> <!-- end container -->
+  
+</section> <!-- end section -->
+
+{% endblock %}
+
+
+
+{% block scr %}
+<script>
+function openCity(evt, cityName) {
+  var i, x, tablinks;
+  x = document.getElementsByClassName("city");
+  for (i = 0; i < x.length; i++) {
+    x[i].style.display = "none";
+  }
+  tablinks = document.getElementsByClassName("tablink");
+  for (i = 0; i < x.length; i++) {
+    tablinks[i].className = tablinks[i].className.replace(" w3-red", "");
+  }
+  document.getElementById(cityName).style.display = "block";
+  evt.currentTarget.className += " w3-red";
+}
+</script>
+
+{% endblock %}
+

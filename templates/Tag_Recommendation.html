@@ -1,0 +1,89 @@
+{% extends 'Dbase.html' %}
+
+{% block con %}
+{% endblock %}
+
+
+{% block content %}
+
+<!-- Srart Contact Us
+  =========================================== -->   
+  <section id="contact-us" class="contact-us section-bg">
+    <div class="container">
+      <div class="row">
+
+        <!-- section title -->
+        <div class="title text-center wow fadeIn" data-wow-duration="500ms">
+          <h2>Tag <span class="color">Recommendation</span></h2>
+          <div class="border"></div>
+        </div>
+        <!-- /section title -->
+
+        <!-- Contact Details -->
+<div class="panel-group" id="accordion">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h4 class="panel-title">
+          <a data-toggle="collapse" data-parent="#accordion" href="#collapse1">Tag Based Fashion Recommendation</a>
+        </h4>
+      </div>
+      <div id="collapse1" class="panel-collapse collapse in">
+        <div class="panel-body">
+          
+          <p>Select Tag:</p>
+{% for obj in t %}
+<form class="boxed" action="" method="post"  enctype="multipart/form-data">
+{% csrf_token %}
+
+  <input type="radio" id="{{obj}}" name="skills" value="{{obj}}">
+  <label for="{{obj}}">{{obj}}</label>
+{% endfor %}
+
+  <br><br>
+  <input class="btn btn-primary btn-block btn-outline-info" type="submit" value="Submit" name="Submit">
+  <br><br>
+</form>
+<div class="clearfix">
+      <h2 class="text-center">Your Selected Tag : {{u_item}}</h2>
+      <h4 class="text-center" style="color:var(--text-muted);">Tag Based Similar Dress Categories!</h4>
+      {% for i,j in ncl %}
+      <article class="col-md-6 col-sm-6 col-xs-12 clearfix wow fadeInUp" data-wow-duration="500ms">
+
+        <div class="post-block">
+          <div class="media-wrapper">
+            <h3>{{i}}</h3>
+          </div>
+          
+          <div class="content">
+            <h3>Tag Count : {{j}}</h3>
+          </div>
+        </div>
+                    
+      </article>
+      {% endfor %}
+
+    </div>
+  
+
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+        <!-- / End Contact Details -->
+
+      </div> <!-- end row -->
+    </div> <!-- end container -->
+
+  </section> <!-- end section -->
+
+
+{% endblock %}
+
+
+{% block scr %}
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+{% endblock %}

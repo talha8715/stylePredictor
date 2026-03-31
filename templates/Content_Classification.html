@@ -1,0 +1,112 @@
+
+
+{% extends 'Dbase.html' %}
+
+
+{% block content %}
+
+<!-- Srart Contact Us
+  =========================================== -->   
+  <section id="contact-us" class="contact-us section-bg">
+    <div class="container">
+      <div class="row">
+
+        <!-- section title -->
+        <div class="title text-center wow fadeIn" data-wow-duration="500ms">
+          <h2>Similarity <span class="color">Recommendation</span></h2>
+          <div class="border"></div>
+        </div>
+        <!-- /section title -->
+        <form id="contact-form" action="" method="post" accept-charset="utf-8">
+        <!-- Contact Details -->
+        <div class="contact-form col-md-4 wow fadeInUp" data-wow-duration="500ms" data-wow-delay="300ms">
+
+            {% csrf_token %}
+
+            <div class="form-group">
+              <label for="type">Select Article Type</label>
+              <select name="type" id="type" class="form-control">
+                <option></option>
+                <option  value="15">Shirts</option>
+                <option value="204">Jeans</option>
+                <option  value="381">Track Pants</option>
+                <option value="39">Tshirts</option>
+                <option  value="69">Casual Shoes</option>
+                <option value="129">Sandals</option>
+                <option  value="190">Formal Shoes</option>
+                <option value="143">Flats</option>
+                <option  value="191">Kurtas</option>
+                <option value="108">Sports Shoes</option>
+                <option  value="444">Shorts</option>
+                <option value="364">Trousers</option>
+                <option  value="1058">Jackets</option>
+                <option value="1679">Sweaters</option>
+
+              </select>
+            </div>
+          
+        </div>
+        <!-- / End Contact Details -->
+        
+        <div class="col-md-4 padding-0 ">
+
+          <h2 class="text-center" style="color:var(--text-muted);">OR</h2>
+        </div>
+
+        <div class="contact-form col-md-4 wow fadeInUp" data-wow-duration="500ms" data-wow-delay="300ms">
+          <div class="form-group">
+              <label for="cat">Select Category</label>
+              <select name="cat" id="cat" class="form-control">
+                <option></option>
+                <option  value="7">Casual</option>
+                <option value="60">Ethnic</option>
+                <option  value="48">Formal</option>
+                <option value="67">Sports</option>
+                <option  value="6807">Smart Casual</option>
+                <option value="9153">Travel</option>
+                <option  value="6917">Party</option>
+
+              </select>
+            </div>
+        </div>
+        <div id="cf-submit">
+              <input class="btn btn-transparent" id="contact-submit" type="submit" name="Submit" value="Submit">
+        </div>
+        <br>
+        <br>
+        <!-- ./End Contact Form -->
+        </form>
+      </div> <!-- end row -->
+    </div> <!-- end container -->
+
+  </section> <!-- end section -->
+
+
+
+
+<section id="services" class="bg-one section">
+  <div class="container">
+    <div class="row">
+      
+      <!-- section title -->
+      <div class="title text-center wow fadeIn" data-wow-duration="500ms">
+        <h2>Your <span class="color">Recommendations</span></h2>
+        <div class="border"></div>
+      </div>
+      <!-- /section title -->
+      
+      {% for i,j in rl %}
+      <div class="col-md-9 padding-0 ">
+        
+        <h4 style="font-weight:600;"><a>{{i}}</a></h4>
+      </div>
+      <div class="col-md-3 padding-0 ">
+        
+        <h4><span class="text-accent">{{j}}</span></h4>
+      </div>
+      {% endfor %}
+    </div>    <!-- End row -->
+  </div>    <!-- End container -->
+</section> 
+
+  {% endblock %}

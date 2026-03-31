@@ -1,0 +1,140 @@
+
+
+{% extends 'Dbase.html' %}
+
+
+{% block content %}
+
+<!-- Srart Contact Us
+  =========================================== -->   
+  <section id="contact-us" class="contact-us section-bg">
+    <div class="container">
+      <div class="row">
+
+        <!-- section title -->
+        <div class="title text-center wow fadeIn" data-wow-duration="500ms">
+          <h2>User <span class="color">Details</span></h2>
+          <div class="border"></div>
+        </div>
+        <!-- /section title -->
+
+        <!-- Contact Details -->
+        <div class="contact-form col-md-7 wow fadeInUp" data-wow-duration="500ms" data-wow-delay="300ms">
+          <form id="contact-form" action="" method="post" accept-charset="utf-8">
+
+            {% csrf_token %}
+
+            <div class="form-group">
+              <label for="area">Area where you live</label>
+              <select name="area" id="area" class="form-control">
+                <option  value="Urban">Urban</option>
+                <option value="Rural">Rural</option>
+
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="city">City name</label>
+
+              <input type="text" name="city" value="" placeholder="City" class="form-control">
+            </div>
+            <div class="form-group">
+              <label for="occupation">Your Occupation</label>
+
+              <select name="occupation" id="occupation" class="form-control">
+                <option value="Student">Student</option>
+                <option value="Teacher">Teacher</option>
+                <option value="Businessman">Businessman</option>
+                <option value="Doctor">Doctor</option>
+                <option value="Engineer">Engineer</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="gender">Your Gender</label>
+
+              <select name="gender" id="gender" class="form-control"> 
+                <option value="Male">Male</option>
+                <option value="Female">Female</option>
+
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="education">Your Education</label>
+
+
+              <select name="education" id="education" class="form-control">
+                <option value="Matriculation">Matriculation</option>
+                <option value="Intermediate">Intermediate</option>
+                <option value="Bachelor_Degree">Bachelor_Degree</option>
+                <option value="Master_Degree">Masters_Degree</option>
+
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="age">Your Age</label>
+              <input type="number" name="age" value="" placeholder="Age" class="form-control">
+            </div>
+            <br>
+            <div id="cf-submit">
+              <input class="btn btn-transparent" id="contact-submit" type="submit" name="Submit" value="Submit">
+            </div>
+
+          </form>
+        </div>
+        <!-- / End Contact Details -->
+        
+        <div class="col-md-5 padding-0 text-center">
+          <br>
+          <img style="max-width:100%;height:auto;border-radius:var(--radius-lg);border:1px solid var(--border);" class="img-responsive" src="../static/home/images/about/user.jpg" alt="User">
+        </div>
+        <!-- ./End Contact Form -->
+
+      </div> <!-- end row -->
+    </div> <!-- end container -->
+
+  </section> <!-- end section -->
+
+
+
+
+<section id="services" class="bg-one section">
+  <div class="container">
+    <div class="row">
+      
+      <!-- section title -->
+      <div class="title text-center wow fadeIn" data-wow-duration="500ms">
+        <h2>Your <span class="color">Detail</span></h2>
+        <div class="border"></div>
+      </div>
+      <!-- /section title -->
+      
+      
+      <div class="col-md-12 padding-0 ">
+        
+        <h2 style="text-align: center;  font-weight: bold;">Your Gender is <span class="text-accent">{{G}}</span></h2>
+      </div>
+        <div class="col-md-12 padding-0 ">
+        
+        <h2 style="text-align: center; font-weight: bold;">Your age is <span class="text-accent">{{a}}</span></h2>
+      </div>
+      <div class="col-md-12 padding-0 ">
+        
+        <h2 style="text-align: center;  font-weight: bold;">Your City is <span class="text-accent">{{C}}</span></h2>
+      </div>
+      <div class="col-md-12 padding-0 ">
+        
+        <h2 style="text-align: center; font-weight: bold;">You live in <span class="text-accent">{{A}}</span> Area</h2>
+      </div>
+      <div class="col-md-12 padding-0 ">
+        
+        <h2 style="text-align: center; font-weight: bold;">You Education is <span class="text-accent">{{E}}</span> Area</h2>
+      </div>
+      <div class="col-md-12 padding-0 ">
+        
+        <h2 style="text-align: center; font-weight: bold;">Your Occupation is <span class="text-accent">{{O}}</span></h2>
+      </div>
+
+    </div>    <!-- End row -->
+  </div>    <!-- End container -->
+</section> 
+
+  {% endblock %}

@@ -1,0 +1,20 @@
+{% extends 'Base.html' %}
+{% block title %}{{ block.super }} | Delete {{ object.title }}?{% endblock title %}
+{% block content %}
+
+<div class="row justify-content-center">
+    <div class="col-md-6 my-5">
+        <div class="glass-card text-center">
+            <i class="fas fa-exclamation-triangle" style="font-size:3rem;color:var(--rose);margin-bottom:1.5rem;display:block;"></i>
+            <h4 style="font-weight:700;margin-bottom:1rem;">Delete Post?</h4>
+            <p style="color:var(--text-secondary);margin-bottom:1.5rem;">Are you sure you want to delete "<strong>{{ object }}</strong>"? This action cannot be undone.</p>
+            <form action="" method="post">
+                {% csrf_token %}
+                <input class="btn btn-secondary mr-2" type="button" value="Cancel" onclick="window.history.go(-1);" />
+                <input class="btn btn-danger" type="submit" value="Delete" />
+            </form>
+        </div>
+    </div>
+</div>
+
+{% endblock content %}
