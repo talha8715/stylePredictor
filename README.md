@@ -293,15 +293,3 @@ Full CRUD system for fashion posts with image uploads, category tagging, event t
 
 ---
 
-## Default Credentials
-
-| Role        | Username          | Password      |
-|-------------|-------------------|---------------|
-| Regular User| `talha-javaid-1`  | `Talha8715.`  |
-| Super Admin | `talha-javaid-2`  | `Talha8715.`  |
-
----
-
-## License
-
-This project was developed as a Final Year Project (FYP).
