@@ -24,6 +24,7 @@ apyori==1.1.2
 
 # --- HTTP ---
 requests==2.32.3
+openai==0.28.1
 
 # --- Windows timezone data (required on Windows) ---
 tzdata==2025.2

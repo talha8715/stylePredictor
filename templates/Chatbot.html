@@ -1,0 +1,476 @@
+{% extends 'Dbase.html' %}
+
+{% block con %}
+<style>
+  :root {
+    --stylebot-primary: var(--primary);
+    --stylebot-primary-soft: rgba(124, 58, 237, 0.16);
+    --stylebot-border: var(--border-light);
+    --stylebot-text: var(--text-primary);
+    --stylebot-muted: var(--text-muted);
+  }
+
+  .chat-shell {
+    border: 1px solid var(--stylebot-border);
+    border-radius: 14px;
+    background: var(--bg-card);
+    overflow: hidden;
+    box-shadow: var(--shadow-md);
+  }
+
+  #stylebot-chat {
+    background: var(--gradient-hero);
+    min-height: calc(100vh - 120px);
+    padding-top: 60px;
+    padding-bottom: 60px;
+    position: relative;
+  }
+
+  #stylebot-chat::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: var(--gradient-mesh);
+    pointer-events: none;
+  }
+
+  #stylebot-chat .title h2 {
+    color: #e8f0f8;
+  }
+
+  #stylebot-chat .title p {
+    color: #a9bfd3;
+  }
+
+  #stylebot-chat .title .border {
+    background: var(--gradient-primary);
+  }
+
+  .chat-header {
+    padding: 1rem 1.2rem;
+    border-bottom: 1px solid var(--stylebot-border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    background: linear-gradient(90deg, rgba(51,41,90,0.95) 0%, rgba(37,29,66,0.98) 100%);
+  }
+
+  #chat-window {
+    height: 430px;
+    overflow-y: auto;
+    padding: 1rem;
+    background: linear-gradient(180deg, rgba(37,29,66,0.82) 0%, rgba(26,19,51,0.96) 100%);
+  }
+
+  .chat-input-bar {
+    padding: 0.8rem 1rem;
+    border-top: 1px solid var(--stylebot-border);
+    background: var(--bg-card);
+  }
+
+  .chat-shell .quick-chip,
+  .chat-shell .refine-chip,
+  .chat-shell #reset-chat {
+    background: var(--bg-surface);
+    border: 1px solid var(--border-light);
+    color: var(--text-secondary);
+    transition: all 0.2s ease;
+  }
+
+  .chat-shell .quick-chip,
+  .chat-shell .refine-chip {
+    opacity: 0.88;
+  }
+
+  .refine-wrap {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.45rem;
+    margin: 0.3rem 0 0.9rem 0;
+  }
+
+  .chat-shell .refine-chip {
+    border-radius: 999px;
+    padding: 0.35rem 0.75rem;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.2px;
+    background: linear-gradient(135deg, rgba(51,41,90,0.94) 0%, rgba(37,29,66,0.98) 100%);
+    border: 1px solid var(--border-light);
+    color: var(--text-secondary);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.22);
+  }
+
+  .chat-shell .quick-chip:hover,
+  .chat-shell .quick-chip:focus,
+  .chat-shell .refine-chip:hover,
+  .chat-shell .refine-chip:focus,
+  .chat-shell #reset-chat:hover,
+  .chat-shell #reset-chat:focus {
+    background: rgba(124, 58, 237, 0.18);
+    border-color: var(--primary-light);
+    color: var(--text-primary);
+    opacity: 1;
+    transform: translateY(-1px);
+  }
+
+  #send-btn {
+    background: var(--gradient-primary);
+    border-color: transparent;
+    color: #ffffff;
+    box-shadow: 0 6px 18px var(--primary-glow);
+  }
+
+  #send-btn:hover,
+  #send-btn:focus {
+    filter: brightness(0.92);
+  }
+
+  #chat-input {
+    background: var(--bg-surface);
+    border: 1px solid var(--border-light);
+    color: var(--text-primary);
+  }
+
+  #chat-input::placeholder {
+    color: var(--text-muted);
+  }
+
+  .sb-btn {
+    appearance: none;
+    border: 1px solid transparent;
+    border-radius: 10px;
+    font-weight: 600;
+    letter-spacing: 0.2px;
+    transition: all 0.2s ease;
+    cursor: pointer;
+  }
+
+  .sb-btn:focus {
+    outline: none;
+    box-shadow: 0 0 0 2px var(--primary-glow);
+  }
+
+  .sb-btn-primary {
+    background: var(--gradient-primary);
+    border-color: transparent;
+    color: #ffffff;
+    padding: 0.6rem 1.05rem;
+    min-width: 86px;
+  }
+
+  .sb-btn-primary:hover,
+  .sb-btn-primary:focus {
+    transform: translateY(-1px);
+    filter: brightness(1.06);
+  }
+
+  .sb-btn-soft {
+    background: linear-gradient(135deg, rgba(51,41,90,0.95) 0%, rgba(37,29,66,1) 100%);
+    border-color: var(--border-light);
+    color: var(--text-secondary);
+    padding: 0.45rem 0.8rem;
+  }
+
+  .sb-btn-soft:hover,
+  .sb-btn-soft:focus {
+    background: rgba(124, 58, 237, 0.18);
+    color: var(--text-primary);
+    transform: translateY(-1px);
+  }
+
+  .sb-btn-chip {
+    background: var(--bg-surface);
+    border: 1px solid var(--border-light);
+    color: var(--text-secondary);
+    padding: 0.33rem 0.72rem;
+    border-radius: 999px;
+    font-size: 12px;
+    opacity: 0.9;
+  }
+
+  .sb-btn-chip:hover,
+  .sb-btn-chip:focus {
+    background: rgba(124, 58, 237, 0.2);
+    border-color: var(--primary-light);
+    color: var(--text-primary);
+    opacity: 1;
+    transform: translateY(-1px);
+  }
+
+  .sb-inline-link {
+    display: inline-block;
+    margin-top: 0.45rem;
+    padding: 0.25rem 0.55rem;
+    border-radius: 999px;
+    border: 1px solid rgba(45, 212, 191, 0.5);
+    color: var(--teal);
+    text-decoration: none;
+    background: rgba(45, 212, 191, 0.12);
+    font-size: 12px;
+    font-weight: 600;
+  }
+
+  .sb-inline-link:hover,
+  .sb-inline-link:focus {
+    color: #d9fff8;
+    border-color: var(--teal);
+    text-decoration: none;
+    background: rgba(45, 212, 191, 0.2);
+  }
+</style>
+{% endblock %}
+
+{% block content %}
+<section class="section about-2" id="stylebot-chat">
+  <div class="container">
+    <div class="row">
+      <div class="title text-center wow fadeIn" data-wow-duration="500ms">
+        <h2>StyleBot <span class="color">Chatbot</span></h2>
+        <div class="border"></div>
+        <p>Ask naturally about event outfits, dress ideas, color combinations, and plan saving.</p>
+      </div>
+
+      <div class="col-md-10 col-md-offset-1">
+        <div class="chat-shell">
+          <div class="chat-header">
+            <div>
+              <strong>StyleBot Assistant</strong>
+              <div style="font-size:0.88rem;color:var(--stylebot-muted);">Fashion-only assistant with event planning support</div>
+            </div>
+            <button id="reset-chat" type="button" class="sb-btn sb-btn-soft">Reset Chat</button>
+          </div>
+
+          <div id="chat-window"></div>
+
+          <div class="chat-input-bar">
+            <div id="quick-actions" style="display:flex;flex-wrap:wrap;gap:0.5rem;margin-bottom:0.7rem;">
+              <button class="sb-btn sb-btn-chip quick-chip" data-message="I need a wedding look recommendation.">Wedding Look</button>
+              <button class="sb-btn sb-btn-chip quick-chip" data-message="Help me dress for an office event.">Office Event</button>
+              <button class="sb-btn sb-btn-chip quick-chip" data-message="Suggest a casual outfit for today.">Casual Outfit</button>
+              <button class="sb-btn sb-btn-chip quick-chip" data-message="Suggest a stylish outfit under my budget.">Budget Outfit</button>
+              <button class="sb-btn sb-btn-chip quick-chip" data-message="Please save this as an event plan.">Save Plan</button>
+            </div>
+
+            <div style="display:flex;gap:0.6rem;">
+              <input id="chat-input" type="text" class="form-control" placeholder="Type your message..." autocomplete="off">
+              <button id="send-btn" class="sb-btn sb-btn-primary" type="button">Send</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}
+
+{% block scr %}
+<script>
+(function() {
+  var chatWindow = document.getElementById('chat-window');
+  var input = document.getElementById('chat-input');
+  var sendBtn = document.getElementById('send-btn');
+  var resetBtn = document.getElementById('reset-chat');
+  var quickChips = document.getElementsByClassName('quick-chip');
+
+  function getCSRFToken() {
+    var name = 'csrftoken=';
+    var parts = document.cookie.split(';');
+    for (var i = 0; i < parts.length; i++) {
+      var c = parts[i].trim();
+      if (c.indexOf(name) === 0) {
+        return c.substring(name.length, c.length);
+      }
+    }
+    return '';
+  }
+
+  function scrollToBottom() {
+    chatWindow.scrollTop = chatWindow.scrollHeight;
+  }
+
+  function addMessage(role, text) {
+    var row = document.createElement('div');
+    row.style.marginBottom = '0.7rem';
+    row.style.display = 'flex';
+    row.style.justifyContent = role === 'user' ? 'flex-end' : 'flex-start';
+
+    var bubble = document.createElement('div');
+    bubble.style.maxWidth = '85%';
+    bubble.style.padding = '0.7rem 0.9rem';
+    bubble.style.borderRadius = '12px';
+    bubble.style.whiteSpace = 'pre-line';
+    bubble.style.border = role === 'user' ? '1px solid rgba(124, 58, 237, 0.55)' : '1px solid rgba(61, 50, 112, 0.95)';
+    bubble.style.background = role === 'user' ? 'rgba(124, 58, 237, 0.28)' : 'rgba(51, 41, 90, 0.72)';
+    bubble.style.color = '#f5f3ff';
+    bubble.textContent = text;
+
+    row.appendChild(bubble);
+    chatWindow.appendChild(row);
+    scrollToBottom();
+
+    if (role === 'assistant') {
+      addRefineChips();
+    }
+  }
+
+  function addRefineChips() {
+    var existingWraps = chatWindow.querySelectorAll('.refine-wrap');
+    for (var x = 0; x < existingWraps.length; x++) {
+      existingWraps[x].remove();
+    }
+
+    var wrap = document.createElement('div');
+    wrap.className = 'refine-wrap';
+
+    var items = [
+      { label: 'Formal +', prompt: 'Make it more formal.' },
+      { label: 'Casual +', prompt: 'Make it more casual.' },
+      { label: 'Budget -', prompt: 'Lower budget option please.' },
+      { label: 'Color Swap', prompt: 'Suggest a different color palette.' }
+    ];
+
+    for (var i = 0; i < items.length; i++) {
+      var btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'sb-btn sb-btn-chip refine-chip';
+      btn.textContent = items[i].label;
+      btn.setAttribute('data-message', items[i].prompt);
+      btn.addEventListener('click', function(e) {
+        sendMessage(e.target.getAttribute('data-message'));
+      });
+      wrap.appendChild(btn);
+    }
+
+    chatWindow.appendChild(wrap);
+    scrollToBottom();
+  }
+
+  function addTyping() {
+    var row = document.createElement('div');
+    row.id = 'typing-indicator';
+    row.style.marginBottom = '0.7rem';
+    row.style.display = 'flex';
+    row.style.justifyContent = 'flex-start';
+
+    var bubble = document.createElement('div');
+    bubble.style.padding = '0.6rem 0.8rem';
+    bubble.style.borderRadius = '10px';
+    bubble.style.border = '1px solid rgba(61, 50, 112, 0.95)';
+    bubble.style.background = 'rgba(51, 41, 90, 0.72)';
+    bubble.style.color = '#f5f3ff';
+    bubble.textContent = 'StyleBot is typing...';
+
+    row.appendChild(bubble);
+    chatWindow.appendChild(row);
+    scrollToBottom();
+  }
+
+  function removeTyping() {
+    var existing = document.getElementById('typing-indicator');
+    if (existing) {
+      existing.remove();
+    }
+  }
+
+  function addPlanCard(plan) {
+    if (!plan) {
+      return;
+    }
+    var card = document.createElement('div');
+    card.style.margin = '0.1rem 0 1rem 0';
+    card.style.padding = '0.8rem';
+    card.style.border = '1px solid rgba(45, 212, 191, 0.45)';
+    card.style.borderRadius = '10px';
+    card.style.background = 'rgba(45, 212, 191, 0.12)';
+    card.style.color = '#d9fff8';
+    card.innerHTML =
+      '<strong>Plan Saved</strong><br>' +
+      'Title: ' + (plan.title || '-') + '<br>' +
+      'Event: ' + (plan.event || '-') + '<br>' +
+      'Date: ' + (plan.due_date || '-') + '<br>' +
+      'Time: ' + (plan.time || '-') + '<br>' +
+      'Priority: ' + (plan.priority || '-') + '<br>' +
+      '<a class="sb-inline-link" href="{% url 'planDetails' %}">Open Planner</a>';
+    chatWindow.appendChild(card);
+    scrollToBottom();
+  }
+
+  async function sendMessage(forceMessage) {
+    var msg = forceMessage || input.value.trim();
+    if (!msg) {
+      return;
+    }
+
+    addMessage('user', msg);
+    input.value = '';
+    addTyping();
+
+    try {
+      var res = await fetch("{% url 'chatbot_message' %}", {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-CSRFToken': getCSRFToken()
+        },
+        body: JSON.stringify({ message: msg })
+      });
+
+      var data = await res.json();
+      removeTyping();
+
+      if (!res.ok) {
+        addMessage('assistant', data.error || 'Something went wrong. Please try again.');
+        return;
+      }
+
+      addMessage('assistant', data.reply || 'I could not generate a response.');
+      if (data.plan_saved) {
+        addPlanCard(data.plan);
+      }
+    } catch (err) {
+      removeTyping();
+      addMessage('assistant', 'Network issue. Please try again.');
+    }
+  }
+
+  sendBtn.addEventListener('click', function() {
+    sendMessage();
+  });
+
+  input.addEventListener('keydown', function(e) {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      sendMessage();
+    }
+  });
+
+  for (var i = 0; i < quickChips.length; i++) {
+    quickChips[i].addEventListener('click', function(e) {
+      var message = e.target.getAttribute('data-message');
+      sendMessage(message);
+    });
+  }
+
+  resetBtn.addEventListener('click', async function() {
+    try {
+      var res = await fetch("{% url 'chatbot_reset' %}", {
+        method: 'POST',
+        headers: {
+          'X-CSRFToken': getCSRFToken(),
+          'Content-Type': 'application/json'
+        }
+      });
+      var data = await res.json();
+      chatWindow.innerHTML = '';
+      addMessage('assistant', data.message || 'Chat reset complete.');
+    } catch (err) {
+      addMessage('assistant', 'Unable to reset right now.');
+    }
+  });
+
+  addMessage('assistant', "{{ welcome_message|escapejs }}");
+})();
+</script>
+{% endblock %}

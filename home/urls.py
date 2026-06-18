@@ -14,4 +14,7 @@ urlpatterns = [
 	path('textRecommender', views.textRecommender, name='textRecommender'),
 	path('tagRecommender', views.tagRecommender, name='tagRecommender'),
 	path('contentClassify', views.contentClassify, name='contentClassify'),
+	path('chatbot', views.chatbot_page, name='chatbot_page'),
+	path('chatbot/message', views.chatbot_message, name='chatbot_message'),
+	path('chatbot/reset', views.chatbot_reset, name='chatbot_reset'),
 ]

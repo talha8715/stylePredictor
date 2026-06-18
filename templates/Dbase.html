@@ -47,20 +47,11 @@
           <li><a data-scroll href="{% url 'Home' %}"><i class="fas fa-home mr-1"></i> Home</a></li>
 
           {% if request.user.is_authenticated %}
-          <li><a data-scroll href="#" aria-haspopup="true"><i class="fas fa-magic mr-1"></i> Predict</a>
-            <ul class="dropdown" aria-label="submenu">
-              <li><a href="{% url 'textClassifier' %}"><i class="fas fa-font mr-1"></i> Text Classification</a></li>
-              <li><a href="{% url 'imgPredictor' %}"><i class="fas fa-image mr-1"></i> Image Classification</a></li>
-            </ul>
-          </li>
-          <li><a data-scroll href="#" aria-haspopup="true"><i class="fas fa-star mr-1"></i> Recommend</a>
-            <ul class="dropdown" aria-label="submenu">
-              <!-- <li><a href="{% url 'tagRecommender' %}"><i class="fas fa-tags mr-1"></i> Tag Recommendation</a></li> -->
-              <li><a href="{% url 'contentClassify' %}"><i class="fas fa-th-large mr-1"></i> Similarity</a></li>
-              <!-- <li><a href="{% url 'textRecommender' %}"><i class="fas fa-align-left mr-1"></i> Text Recommendation</a></li> -->
-              <li><a href="{% url 'imgRecommender' %}"><i class="fas fa-images mr-1"></i> Image Recommendation</a></li>
-            </ul>
-          </li>
+          <li><a data-scroll href="{% url 'chatbot_page' %}"><i class="fas fa-comments mr-1"></i> StyleBot</a></li>
+          <li><a data-scroll href="{% url 'imgPredictor' %}"><i class="fas fa-magic mr-1"></i> Predict</a></li>
+          <li><a data-scroll href="{% url 'imgRecommender' %}"><i class="fas fa-images mr-1"></i> Image Recommendation</a></li>
+          {% comment %}<li><a href="{% url 'textClassifier' %}"><i class="fas fa-font mr-1"></i> Text Classification</a></li>{% endcomment %}
+          {% comment %}<li><a href="{% url 'contentClassify' %}"><i class="fas fa-th-large mr-1"></i> Similarity</a></li>{% endcomment %}
           <li><a data-scroll href="{% url 'gallery' %}"><i class="fas fa-th mr-1"></i> Gallery</a></li>
           <li><a data-scroll href="{% url 'planDetails' %}"><i class="fas fa-calendar-alt mr-1"></i> Plan</a></li>
           <li><a data-scroll href="#" aria-haspopup="true"><i class="fas fa-user mr-1"></i> Profile</a>

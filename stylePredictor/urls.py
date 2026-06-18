@@ -15,6 +15,7 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from home import views as home_views
 
 from django.conf import settings
 from django.conf.urls.static import static
@@ -23,6 +24,9 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('accounts.urls')),
     path('post/', include('posts_.urls')),
+    path('chatbot', home_views.chatbot_page, name='chatbot_page_root'),
+    path('chatbot/message', home_views.chatbot_message, name='chatbot_message_root'),
+    path('chatbot/reset', home_views.chatbot_reset, name='chatbot_reset_root'),
     path('home/', include('home.urls')),
 ] 
 

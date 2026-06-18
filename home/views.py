@@ -7,6 +7,9 @@ from .Tag_Recommendation import HashTagRecommender
 from .Data_Visualization import DataVisulaizer
 
 from django.shortcuts import render, redirect
+from django.http import JsonResponse
+from django.views.decorators.http import require_POST
+from django.contrib.auth.decorators import login_required
 import numpy as np
 from numpy import asarray
 import pandas as pd
@@ -24,6 +27,8 @@ from .models import UserModal, FashionModel, PlanModel
 from django.conf import settings
 from keras.applications import vgg16
 import datetime
+
+from .ChatbotEngine import FashionChatbotEngine
 
 
 def index1(request):
@@ -430,3 +435,49 @@ def contentClassify(request):
 			return render(request, "Content_Classification.html", {'rl': rl})
 
 	return render(request, "Content_Classification.html")
+
+
+@login_required
+def chatbot_page(request):
+	if 'chat_history' not in request.session:
+		request.session['chat_history'] = []
+	request.session.modified = True
+	return render(request, "Chatbot.html", {
+		'welcome_message': "Hi! I am StyleBot. Ask me about outfits, events, colors, or planning your event.",
+	})
+
+
+@login_required
+@require_POST
+def chatbot_message(request):
+	try:
+		payload = json.loads(request.body.decode('utf-8'))
+	except Exception:
+		return JsonResponse({'error': 'Invalid JSON payload.'}, status=400)
+
+	user_message = (payload.get('message') or '').strip()
+	if not user_message:
+		return JsonResponse({'error': 'Message is required.'}, status=400)
+
+	history = request.session.get('chat_history', [])
+	engine = FashionChatbotEngine()
+	reply, updated_history, plan_save_result = engine.process_message(history, user_message, request.user)
+
+	request.session['chat_history'] = updated_history
+	request.session.modified = True
+
+	return JsonResponse({
+		'reply': reply,
+		'plan_saved': bool(plan_save_result),
+		'plan': plan_save_result,
+	})
+
+
+@login_required
+@require_POST
+def chatbot_reset(request):
+	request.session['chat_history'] = []
+	request.session.modified = True
+	return JsonResponse({
+		'message': "Chat reset complete. Hi! I am StyleBot. How can I help with your event outfit today?"
+	})

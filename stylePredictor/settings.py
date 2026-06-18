@@ -137,6 +137,9 @@ MEDIA_URL = '/media/'
 
 LOGIN_REDIRECT_URL = 'Home'
 
+OPENAI_API_KEY = os.getenv('OPENAI_API_KEY', '')
+STYLEBOT_MODEL = os.getenv('STYLEBOT_MODEL', 'gpt-4o-mini')
+
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 
