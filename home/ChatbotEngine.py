@@ -18,8 +18,8 @@ OUT_OF_SCOPE_MESSAGE = (
 
 class FashionChatbotEngine:
     def __init__(self):
-        self.model = getattr(settings, "STYLEBOT_MODEL", "gpt-4o-mini")
-        self.api_key = getattr(settings, "OPENAI_API_KEY", "")
+        self.model = getattr(settings, "STYLEBOT_MODEL", "openai/gpt-4o-mini")
+        self.api_key = getattr(settings, "OPENROUTER_API_KEY", "")
 
     def _system_prompt(self):
         return (
@@ -47,6 +47,11 @@ class FashionChatbotEngine:
             return None
         try:
             openai.api_key = self.api_key
+            openai.api_base = getattr(
+                settings,
+                "OPENROUTER_BASE_URL",
+                "https://openrouter.ai/api/v1",
+            )
             return openai
         except Exception as ex:
             logger.exception("stylebot_openai_import_error: %s", ex)
@@ -166,29 +171,32 @@ class FashionChatbotEngine:
         clean_history = history[:] if isinstance(history, list) else []
         clean_history.append({"role": "user", "content": user_message})
 
-        functions = [
+        tools = [
             {
-                "name": "save_event_plan",
-                "description": "Save an event plan for the authenticated user.",
-                "parameters": {
-                    "type": "object",
-                    "properties": {
-                        "title": {"type": "string"},
-                        "event": {"type": "string"},
-                        "due_date": {
-                            "type": "string",
-                            "description": "Date in YYYY-MM-DD format",
+                "type": "function",
+                "function": {
+                    "name": "save_event_plan",
+                    "description": "Save an event plan for the authenticated user.",
+                    "parameters": {
+                        "type": "object",
+                        "properties": {
+                            "title": {"type": "string"},
+                            "event": {"type": "string"},
+                            "due_date": {
+                                "type": "string",
+                                "description": "Date in YYYY-MM-DD format",
+                            },
+                            "time": {
+                                "type": "string",
+                                "description": "Time in HH:MM or 7:30 PM format",
+                            },
+                            "priority": {
+                                "type": "string",
+                                "description": "Low, Medium, or High",
+                            },
                         },
-                        "time": {
-                            "type": "string",
-                            "description": "Time in HH:MM or 7:30 PM format",
-                        },
-                        "priority": {
-                            "type": "string",
-                            "description": "Low, Medium, or High",
-                        },
+                        "required": ["title", "event", "due_date", "time", "priority"],
                     },
-                    "required": ["title", "event", "due_date", "time", "priority"],
                 },
             }
         ]
@@ -200,24 +208,26 @@ class FashionChatbotEngine:
             first = client.ChatCompletion.create(
                 model=self.model,
                 messages=api_messages,
-                functions=functions,
-                function_call="auto",
+                tools=tools,
+                tool_choice="auto",
                 temperature=0.3,
             )
             first_msg = first["choices"][0]["message"]
-            function_call = first_msg.get("function_call")
+            tool_calls = first_msg.get("tool_calls") or []
 
-            if function_call:
+            if tool_calls:
                 api_messages.append(
                     {
                         "role": "assistant",
                         "content": first_msg.get("content") or "",
-                        "function_call": function_call,
+                        "tool_calls": tool_calls,
                     }
                 )
 
-                name = function_call.get("name")
-                args = json.loads(function_call.get("arguments") or "{}")
+                first_call = tool_calls[0]
+                function_obj = first_call.get("function", {})
+                name = function_obj.get("name")
+                args = json.loads(function_obj.get("arguments") or "{}")
                 if name == "save_event_plan":
                     tool_result = self._save_event_plan(args, user)
                     plan_save_result = tool_result if tool_result.get("ok") else None
@@ -226,8 +236,8 @@ class FashionChatbotEngine:
 
                 api_messages.append(
                     {
-                        "role": "function",
-                        "name": name,
+                        "role": "tool",
+                        "tool_call_id": first_call.get("id"),
                         "content": json.dumps(tool_result),
                     }
                 )

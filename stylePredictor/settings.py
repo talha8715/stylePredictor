@@ -137,8 +137,11 @@ MEDIA_URL = '/media/'
 
 LOGIN_REDIRECT_URL = 'Home'
 
-OPENAI_API_KEY = os.getenv('OPENAI_API_KEY', '')
-STYLEBOT_MODEL = os.getenv('STYLEBOT_MODEL', 'gpt-4o-mini')
+STYLEBOT_MODEL = os.getenv('STYLEBOT_MODEL', 'openai/gpt-4o-mini')
+OPENROUTER_API_KEY = os.getenv('OPENROUTER_API_KEY', '')
+OPENROUTER_BASE_URL = os.getenv('OPENROUTER_BASE_URL', 'https://openrouter.ai/api/v1')
+OPENROUTER_SITE_URL = os.getenv('OPENROUTER_SITE_URL', 'http://localhost:8000')
+OPENROUTER_APP_NAME = os.getenv('OPENROUTER_APP_NAME', 'StylePredictor')
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
