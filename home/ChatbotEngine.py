@@ -2,9 +2,8 @@ import json
 import logging
 from datetime import datetime
 
+import requests as http_requests
 from django.conf import settings
-
-import openai
 
 from .models import PlanModel
 
@@ -16,10 +15,19 @@ OUT_OF_SCOPE_MESSAGE = (
 )
 
 
+# Status codes that should trigger failover to the next key.
+_FAILOVER_STATUS_CODES = {401, 402, 403, 404, 429, 500, 503}
+
+
 class FashionChatbotEngine:
     def __init__(self):
         self.model = getattr(settings, "STYLEBOT_MODEL", "openai/gpt-4o-mini")
-        self.api_key = getattr(settings, "OPENROUTER_API_KEY", "")
+        # Build ordered list of keys, skipping blanks.
+        key1 = getattr(settings, "OPENROUTER_API_KEY", "")
+        key2 = getattr(settings, "OPENROUTER_API_KEY_2", "")
+        self.api_keys = [k for k in [key1, key2] if k]
+        # active_key used during a single request; reset each call.
+        self.api_key = self.api_keys[0] if self.api_keys else ""
 
     def _system_prompt(self):
         return (
@@ -42,20 +50,46 @@ class FashionChatbotEngine:
             "call the save_event_plan tool only when all required fields are available."
         )
 
-    def _get_client(self):
-        if not self.api_key:
-            return None
-        try:
-            openai.api_key = self.api_key
-            openai.api_base = getattr(
-                settings,
-                "OPENROUTER_BASE_URL",
-                "https://openrouter.ai/api/v1",
-            )
-            return openai
-        except Exception as ex:
-            logger.exception("stylebot_openai_import_error: %s", ex)
-            return None
+    def _base_url(self):
+        return getattr(
+            settings,
+            "OPENROUTER_BASE_URL",
+            "https://openrouter.ai/api/v1",
+        ).rstrip("/")
+
+    def _headers(self, key):
+        return {
+            "Authorization": f"Bearer {key}",
+            "Content-Type": "application/json",
+            "HTTP-Referer": getattr(settings, "OPENROUTER_SITE_URL", "http://localhost:8000"),
+            "X-Title": getattr(settings, "OPENROUTER_APP_NAME", "StylePredictor"),
+        }
+
+    def _chat(self, payload):
+        """Try each key in order; fall over on quota/auth/404 errors."""
+        url = f"{self._base_url()}/chat/completions"
+        last_exc = None
+        for idx, key in enumerate(self.api_keys):
+            try:
+                resp = http_requests.post(url, headers=self._headers(key), json=payload, timeout=60)
+                if resp.status_code in _FAILOVER_STATUS_CODES and idx < len(self.api_keys) - 1:
+                    logger.warning(
+                        "stylebot_key_failover key_index=%d status=%d", idx, resp.status_code
+                    )
+                    continue
+                resp.raise_for_status()
+                return resp.json()
+            except http_requests.exceptions.HTTPError as exc:
+                last_exc = exc
+                if idx < len(self.api_keys) - 1:
+                    logger.warning(
+                        "stylebot_key_failover key_index=%d error=%s", idx, exc
+                    )
+                    continue
+                raise
+        if last_exc:
+            raise last_exc
+        raise RuntimeError("No OpenRouter keys configured.")
 
     def _normalize_priority(self, value):
         p = (value or "").strip().lower()
@@ -159,8 +193,7 @@ class FashionChatbotEngine:
         }
 
     def process_message(self, history, user_message, user):
-        client = self._get_client()
-        if client is None:
+        if not self.api_keys:
             return (
                 "StyleBot is temporarily unavailable right now. Please try again in a bit. "
                 "You can ask me: What should I wear to a wedding?",
@@ -205,13 +238,13 @@ class FashionChatbotEngine:
 
         plan_save_result = None
         try:
-            first = client.ChatCompletion.create(
-                model=self.model,
-                messages=api_messages,
-                tools=tools,
-                tool_choice="auto",
-                temperature=0.3,
-            )
+            first = self._chat({
+                "model": self.model,
+                "messages": api_messages,
+                "tools": tools,
+                "tool_choice": "auto",
+                "temperature": 0.3,
+            })
             first_msg = first["choices"][0]["message"]
             tool_calls = first_msg.get("tool_calls") or []
 
@@ -242,11 +275,11 @@ class FashionChatbotEngine:
                     }
                 )
 
-                second = client.ChatCompletion.create(
-                    model=self.model,
-                    messages=api_messages,
-                    temperature=0.3,
-                )
+                second = self._chat({
+                    "model": self.model,
+                    "messages": api_messages,
+                    "temperature": 0.3,
+                })
                 reply = (second["choices"][0]["message"].get("content") or "").strip()
             else:
                 reply = (first_msg.get("content") or "").strip()

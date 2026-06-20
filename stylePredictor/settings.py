@@ -139,6 +139,7 @@ LOGIN_REDIRECT_URL = 'Home'
 
 STYLEBOT_MODEL = os.getenv('STYLEBOT_MODEL', 'openai/gpt-4o-mini')
 OPENROUTER_API_KEY = os.getenv('OPENROUTER_API_KEY', '')
+OPENROUTER_API_KEY_2 = os.getenv('OPENROUTER_API_KEY_2', '')
 OPENROUTER_BASE_URL = os.getenv('OPENROUTER_BASE_URL', 'https://openrouter.ai/api/v1')
 OPENROUTER_SITE_URL = os.getenv('OPENROUTER_SITE_URL', 'http://localhost:8000')
 OPENROUTER_APP_NAME = os.getenv('OPENROUTER_APP_NAME', 'StylePredictor')
