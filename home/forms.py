@@ -1,7 +1,7 @@
 from django import forms
-from . models import uimage
+from .models import UserUploadedImage
 
 class ImageForm(forms.ModelForm):
     class Meta:
-        model = uimage
+        model = UserUploadedImage
         fields = ("caption","image")

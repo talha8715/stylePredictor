@@ -22,7 +22,13 @@ import os
 from PIL import Image
 
 from django.contrib.auth.models import User
-from .models import UserModal, FashionModel, PlanModel
+from .models import (
+	UserProfile, UserFashionPreference, EventPlan,
+	GalleryImage,
+	ImagePredictionLog, ImageRecommendationLog,
+	TextPredictionLog, TextRecommendationLog,
+	TagRecommendationLog, ContentSimilarityLog,
+)
 
 from django.conf import settings
 from keras.applications import vgg16
@@ -32,44 +38,36 @@ from .ChatbotEngine import FashionChatbotEngine
 
 
 def index1(request):
-	dv = DataVisulaizer('To visualize the data!')
-	bn, bc, bm = dv.get_mc_rating()
+	dv = DataVisulaizer('graphs')
 
-	bns = json.dumps(bn)
-	bcs = json.dumps(bc)
-	bms = json.dumps(bm)
+	# Graph 1: User growth by month
+	ug_labels, ug_counts = dv.get_user_growth()
+	# Graph 2: Image prediction label distribution
+	pred_labels, pred_counts = dv.get_prediction_label_counts()
+	# Graph 3: Event plan distribution
+	ep_labels, ep_counts = dv.get_event_plan_distribution()
+	# Graph 4: Plan source split (manual vs stylebot)
+	ps_labels, ps_counts = dv.get_plan_source_split()
+	# Graph 5: Fashion color preference
+	fp_labels, fp_counts = dv.get_fashion_preferences()
+	# Graph 6: StyleBot daily sessions
+	sb_labels, sb_counts = dv.get_stylebot_activity()
 
-	uid = request.user.id
-	r = Text_Recommendation_Model('My Brand recommender!')
-	x, y = dv.get_data()
-	a, b, c, d, e = r.user_model(uid)
-
-	ubn = json.dumps(d)
-	uhr = json.dumps(e)
-
-	if request.method == 'POST':
-		for i, j in x:
-			h = request.POST.get(j)
-			if h is not None:
-				pass
-
-		return render(request, 'visuals1.html', {
-			'bn': bns,
-			'bc': bcs,
-			'bm': bms,
-			'ubn': ubn,
-			'uhr': uhr,
-		})
-	else:
-		x, y = dv.get_data()
-
-	return render(request, 'Home.html', {
-		'bn': bns,
-		'bc': bcs,
-		'bm': bms,
-		'ubn': ubn,
-		'uhr': uhr,
-	})
+	ctx = {
+		'ug_labels': json.dumps(ug_labels),
+		'ug_counts': json.dumps(ug_counts),
+		'pred_labels': json.dumps(pred_labels),
+		'pred_counts': json.dumps(pred_counts),
+		'ep_labels': json.dumps(ep_labels),
+		'ep_counts': json.dumps(ep_counts),
+		'ps_labels': json.dumps(ps_labels),
+		'ps_counts': json.dumps(ps_counts),
+		'fp_labels': json.dumps(fp_labels),
+		'fp_counts': json.dumps(fp_counts),
+		'sb_labels': json.dumps(sb_labels),
+		'sb_counts': json.dumps(sb_counts),
+	}
+	return render(request, 'Home.html', ctx)
 
 # def add_data(request):
 #     # if request.session['u_type']:
@@ -83,13 +81,8 @@ def index1(request):
 
 
 def gallery(request):
-	df1 = pd.read_csv('Saved_Models/gallery.csv')
-	data = []
-	u = df1.URL.tolist()
-	r = df1.RESULT.tolist()
-	for i,j in zip(u, r):
-		tup = (i, j)
-		data.append(tup)
+	items = GalleryImage.objects.all().order_by('-created_at')
+	data = [(item.image_url, item.predicted_label) for item in items]
 	return render(request, "Gallery.html", {"data": data} )
 
 #..................................................................
@@ -111,8 +104,16 @@ def imgPredictor(request):
 			furl = '.'+ file_url
 
 			result = obj.predict_img(furl)
-			obj.gallery(furl, result)
-
+			GalleryImage.objects.create(
+				predicted_label=str(result),
+				image_url=file_url,
+				uploaded_by=request.user if request.user.is_authenticated else None,
+			)
+			ImagePredictionLog.objects.create(
+				user=request.user if request.user.is_authenticated else None,
+				image_path=file_url,
+				predicted_label=str(result),
+			)
 			return render(request,"Image_Classification.html",{"result": result, 'img_url': file_url})
 	else:
 		return render(request,"Image_Classification.html") 
@@ -137,11 +138,11 @@ def userDetails(request):
 		print(A,C,O,G,E,a)
 
 		um = UserModal.objects.create(user = cu, area = A, city = C, occupation = O, gender = G, education = E, age = a)
-		um.save()
+		um = UserProfile.objects.create(user=cu, area=A, city=C, occupation=O, gender=G, education=E, age=a)
 		return render(request,"UDetails.html",{"um":um, "A":A, "C":C, "G":G, "O":O, "E":E, "a":a })
 
 	else:
-		um = UserModal.objects.all()
+		um = UserProfile.objects.all()
 		return render(request,"UDetails.html",{"um":um})
 
 #...................................................................
@@ -165,19 +166,18 @@ def fashionDetails(request):
 
 		print(F,B,FC,FDT,FD)
 
-		fs = FashionModel.objects.create(user = cu, fashion_consious = F, brand_consious = B, fav_color = FC, fav_dressing_type = FDT, fav_design = FD)
-		fs.save()
+		fs = UserFashionPreference.objects.create(user=cu, fashion_conscious=F, brand_conscious=B, fav_color=FC, fav_dressing_type=FDT, fav_design=FD)
 
 		return render(request,"FDetails.html",{"fs": fs, "F":F, "B":B, "FC":FC, "FDT":FDT, "FD":FD })  
 	else:
-		um = FashionModel.objects.all() 
+		um = UserFashionPreference.objects.all()
 
 		return render(request,"FDetails.html",{"um":um})
 
 #...................................................................
 
 def planDetails(request):
-	todos = PlanModel.objects.all()
+	todos = EventPlan.objects.all()
 	if request.POST:
 		if "taskAdd" in request.POST:
 
@@ -194,14 +194,13 @@ def planDetails(request):
 
 		    content = tt + " -- " + t + " " + e
 
-		    pp = PlanModel.objects.create(user = cu,title = tt, due_date = d, time = t, event = e,priority = pt, content=content)
-		    pp.save()
+		    EventPlan.objects.create(user=cu, title=tt, due_date=d, time=t, event=e, priority=pt, content=content, source='manual')
 		    # return redirect("/")
 
 		if "taskDelete" in request.POST: #checking if there is a request to delete a todo
 			checked = request.POST.get("checkedbox") #checked todos to be deleted
 			# for u in checkedlist:
-			todo = PlanModel.objects.get(id=int(checked)) #getting todo id
+			todo = EventPlan.objects.get(id=int(checked))
 			todo.delete() #deleting todo
 		return render(request,"PDetails.html",{"todos": todos})
 	else:
@@ -226,8 +225,11 @@ def imgRecommender(request):
 			print('\n\n\n\nget images\n')
 			id_score_list = recom.rec_process(int(f))
 
-			print(id_score_list)
-
+			ImageRecommendationLog.objects.create(
+				user=request.user if request.user.is_authenticated else None,
+				input_image_id=int(f),
+				recommended_item_ids=[s[0] for s in id_score_list] if id_score_list else [],
+			)
 			return render(request,"Image_Recommendation.html", {'id_score_list': id_score_list })
 	else:
 		return render(request,"Image_Recommendation.html")
@@ -269,6 +271,13 @@ def textClassifier(request):
 				target = fp.predict_fashion_style(ud)
 
 				return render(request,"Text_Classification.html",{"target":target})
+				TextPredictionLog.objects.create(
+					user=request.user if request.user.is_authenticated else None,
+					prediction_type='dress_category',
+					input_features=ud,
+					predicted_label=str(target),
+				)
+				return render(request,"Text_Classification.html",{"target":target})
 
 
 			# Event Prediction
@@ -301,6 +310,13 @@ def textClassifier(request):
 				target2 = fp.predict_fashion_style_event(ud)
 
 				return render(request,"Text_Classification.html",{"target2":target2})
+				TextPredictionLog.objects.create(
+					user=request.user if request.user.is_authenticated else None,
+					prediction_type='event',
+					input_features=ud,
+					predicted_label=str(target2),
+				)
+				return render(request,"Text_Classification.html",{"target2":target2})
 
 
 			# Dress Prediction
@@ -332,6 +348,13 @@ def textClassifier(request):
 				fp = Text_Classification_Model(" Dress predictor module object!")
 				target3 = fp.predict_fashion_style_dress(ud)
 
+				return render(request,"Text_Classification.html",{"target3":target3})
+				TextPredictionLog.objects.create(
+					user=request.user if request.user.is_authenticated else None,
+					prediction_type='dress',
+					input_features=ud,
+					predicted_label=str(target3),
+				)
 				return render(request,"Text_Classification.html",{"target3":target3})
 
 		else:
@@ -377,7 +400,12 @@ def textRecommender(request):
 			for i,j,k in zip(g,h,i):
 				tup = (i,j,k)
 				frr.append(tup)
-			print(frr)
+			TextRecommendationLog.objects.create(
+				user=request.user if request.user.is_authenticated else None,
+				query_category=f,
+				recommendation_type='category_based',
+				recommended_items=[r[0] for r in frr],
+			)
 			return render(request, "Text_Recommendation.html",{"u_item": u_item, "arr": arr, "cat": cat, "frr": frr, "urr": urr})
 	else:
 		return render(request, "Text_Recommendation.html",{"arr": arr, "cat": cat, "urr": urr})
@@ -412,8 +440,12 @@ def tagRecommender(request):
 			ncl, fashion_names, fashion_tag_counts = tag_based.get_tagger_brand_distribution(input_tag)
 			
 			ncl = ncl[:6]
-			# print(fashion_names[:5])
-			# print(fashion_tag_counts[:5])
+			TagRecommendationLog.objects.create(
+				user=request.user if request.user.is_authenticated else None,
+				tag_input=input_tag,
+				matched_fashion_choices=tag_brand_list[:20],
+				total_count=int(tag_brand__total_counts),
+			)
 			return render(request, "Tag_Recommendation.html",{"t": t, "ncl": ncl})
 	else:
 		return render(request, "Tag_Recommendation.html",{"t": t})
@@ -432,6 +464,11 @@ def contentClassify(request):
 			r = Text_Content_Class('r')
 			r.rec_pipeline()
 			rl = r.recommend_fashion(str(query), 5)
+			ContentSimilarityLog.objects.create(
+				user=request.user if request.user.is_authenticated else None,
+				query_text=str(query),
+				similar_items=[item[0] for item in rl] if rl else [],
+			)
 			return render(request, "Content_Classification.html", {'rl': rl})
 
 	return render(request, "Content_Classification.html")

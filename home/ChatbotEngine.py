@@ -6,6 +6,7 @@ import requests as http_requests
 from django.conf import settings
 
 from .models import PlanModel
+from .models import EventPlan, StyleBotSession, StyleBotMessage
 
 logger = logging.getLogger(__name__)
 
@@ -180,7 +181,7 @@ class FashionChatbotEngine:
 
         content = f"{title} -- {time_obj.strftime('%H:%M')} {event_text}"
 
-        plan = PlanModel.objects.create(
+        plan = EventPlan.objects.create(
             user=user,
             title=title,
             content=content,
@@ -188,6 +189,7 @@ class FashionChatbotEngine:
             due_date=date_obj,
             time=time_obj,
             priority=priority_code,
+            source='stylebot',
         )
 
         logger.info("plan_saved user_id=%s plan_id=%s", user.id, plan.id)
@@ -215,6 +217,15 @@ class FashionChatbotEngine:
         clean_history = history[:] if isinstance(history, list) else []
         clean_history.append({"role": "user", "content": user_message})
 
+        sb_session = None
+        if user and getattr(user, 'is_authenticated', False):
+            try:
+                sb_session = StyleBotSession.objects.filter(user=user).order_by('-started_at').first()
+                if sb_session is None:
+                    sb_session = StyleBotSession.objects.create(user=user, model_used=self.model)
+                StyleBotMessage.objects.create(session=sb_session, role='user', content=user_message)
+            except Exception:
+                sb_session = None
         tools = [
             {
                 "type": "function",
@@ -300,6 +311,15 @@ class FashionChatbotEngine:
 
             clean_history.append({"role": "assistant", "content": reply})
             clean_history = clean_history[-30:]
+            if sb_session is not None:
+                try:
+                    StyleBotMessage.objects.create(session=sb_session, role='assistant', content=reply)
+                    sb_session.message_count = sb_session.messages.count()
+                    if plan_save_result and plan_save_result.get('ok'):
+                        sb_session.plan_saved = True
+                    sb_session.save(update_fields=['message_count', 'plan_saved', 'last_active_at'])
+                except Exception:
+                    pass
             return reply, clean_history, plan_save_result
 
         except Exception as ex:

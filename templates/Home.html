@@ -23,12 +23,6 @@
 {% block con %}
 <script>
     document.body.scrollTop = "0px";
-    if (document.location.hash === "#project-section") {
-        $('body').animate({ scrollTop: $('#project-section').offset().top }, 'slow');
-    }
-    if (document.location.hash === "#service-section") {
-        $('body').animate({ scrollTop: $('#service-section').offset().top }, 'slow');
-    }
 </script>
 {% endblock %}
 
@@ -44,22 +38,56 @@
                 <p style="max-width:600px;margin:1rem auto 0;font-size:1.05rem;">Insights from fashion trends and your personalized style preferences.</p>
             </div>
 
-            <!-- Chart 1: Brand Rating -->
-            <div class="col-md-12" id="project-section">
+            <div class="col-md-6">
                 <div class="chart-section wow fadeInUp" data-wow-duration="500ms">
-                    <h3 class="chart-title"><i class="fas fa-chart-bar mr-2"></i>Brand Rating Counts &amp; Mean Ratings</h3>
+                    <h3 class="chart-title"><i class="fas fa-users mr-2"></i>User Growth By Month</h3>
                     <div class="chart-wrapper">
-                        <canvas id="brandChart"></canvas>
+                        <canvas id="userGrowthChart"></canvas>
                     </div>
                 </div>
             </div>
 
-            <!-- Chart 2: User Likes -->
-            <div class="col-md-12" id="service-section">
+            <div class="col-md-6">
                 <div class="chart-section wow fadeInUp" data-wow-duration="500ms" data-wow-delay="200ms">
-                    <h3 class="chart-title"><i class="fas fa-heart mr-2"></i>Your Personalized Liked Dress Categories</h3>
+                    <h3 class="chart-title"><i class="fas fa-camera-retro mr-2"></i>Image Prediction Labels</h3>
                     <div class="chart-wrapper">
-                        <canvas id="userChart"></canvas>
+                        <canvas id="predictionChart"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="chart-section wow fadeInUp" data-wow-duration="500ms" data-wow-delay="300ms">
+                    <h3 class="chart-title"><i class="fas fa-calendar-alt mr-2"></i>Event Plan Distribution</h3>
+                    <div class="chart-wrapper">
+                        <canvas id="eventPlanChart"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="chart-section wow fadeInUp" data-wow-duration="500ms" data-wow-delay="400ms">
+                    <h3 class="chart-title"><i class="fas fa-robot mr-2"></i>Manual Vs StyleBot Plans</h3>
+                    <div class="chart-wrapper">
+                        <canvas id="planSourceChart"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="chart-section wow fadeInUp" data-wow-duration="500ms" data-wow-delay="500ms">
+                    <h3 class="chart-title"><i class="fas fa-palette mr-2"></i>Favorite Color Preferences</h3>
+                    <div class="chart-wrapper">
+                        <canvas id="colorPreferenceChart"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="chart-section wow fadeInUp" data-wow-duration="500ms" data-wow-delay="600ms">
+                    <h3 class="chart-title"><i class="fas fa-comments mr-2"></i>StyleBot Sessions By Day</h3>
+                    <div class="chart-wrapper">
+                        <canvas id="stylebotActivityChart"></canvas>
                     </div>
                 </div>
             </div>
@@ -169,40 +197,19 @@
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
 <script>
 (function() {
-    var categories = JSON.parse('{{ bn|escapejs }}');
-    var ratingMeans = JSON.parse('{{ bm|escapejs }}').map(Number);
-    var ratingCounts = JSON.parse('{{ bc|escapejs }}').map(Number);
-
-    var brandCtx = document.getElementById('brandChart').getContext('2d');
-    new Chart(brandCtx, {
-        type: 'bar',
-        data: {
-            labels: categories,
-            datasets: [{
-                label: 'Rating Mean',
-                data: ratingMeans,
-                backgroundColor: 'rgba(124, 58, 237, 0.65)',
-                borderColor: 'rgba(124, 58, 237, 1)',
-                borderWidth: 2,
-                borderRadius: 8,
-                borderSkipped: false
-            }, {
-                label: 'Rating Count',
-                data: ratingCounts,
-                backgroundColor: 'rgba(244, 114, 182, 0.6)',
-                borderColor: 'rgba(244, 114, 182, 1)',
-                borderWidth: 2,
-                borderRadius: 8,
-                borderSkipped: false
-            }]
-        },
-        options: {
+    function baseOptions() {
+        return {
             responsive: true,
             maintainAspectRatio: false,
             plugins: {
                 legend: {
                     position: 'top',
-                    labels: { color: '#C4B5FD', font: { family: 'Inter', size: 13, weight: 500 }, padding: 20, usePointStyle: true, pointStyle: 'rectRounded' }
+                    labels: {
+                        color: '#C4B5FD',
+                        font: { family: 'Inter', size: 13, weight: 500 },
+                        padding: 16,
+                        usePointStyle: true
+                    }
                 },
                 tooltip: {
                     backgroundColor: '#1A1333',
@@ -219,59 +226,137 @@
             scales: {
                 x: {
                     ticks: { color: '#C4B5FD', font: { family: 'Inter', size: 11 } },
-                    grid: { color: 'rgba(45, 34, 85, 0.5)' },
-                    title: { display: true, text: 'Brands', color: '#C4B5FD', font: { family: 'Inter', weight: 600, size: 13 } }
+                    grid: { color: 'rgba(45, 34, 85, 0.5)' }
                 },
                 y: {
                     ticks: { color: '#C4B5FD', font: { family: 'Inter', size: 11 } },
-                    grid: { color: 'rgba(45, 34, 85, 0.5)' },
-                    title: { display: true, text: 'Amount', color: '#C4B5FD', font: { family: 'Inter', weight: 600, size: 13 } }
+                    grid: { color: 'rgba(45, 34, 85, 0.5)' }
                 }
             }
-        }
-    });
+        };
+    }
 
-    var userCategories = JSON.parse('{{ ubn|escapejs }}');
-    var userRatingCounts = JSON.parse('{{ uhr|escapejs }}').map(Number);
-    var colors = ['rgba(124,58,237,0.7)', 'rgba(244,114,182,0.7)', 'rgba(45,212,191,0.65)', 'rgba(251,191,36,0.65)', 'rgba(56,189,248,0.65)', 'rgba(52,211,153,0.65)', 'rgba(251,113,133,0.65)', 'rgba(167,139,250,0.65)'];
-    var borderColors = ['rgba(124,58,237,1)', 'rgba(244,114,182,1)', 'rgba(45,212,191,1)', 'rgba(251,191,36,1)', 'rgba(56,189,248,1)', 'rgba(52,211,153,1)', 'rgba(251,113,133,1)', 'rgba(167,139,250,1)'];
-    var bgColors = userCategories.map(function(_, i) { return colors[i % colors.length]; });
-    var bdColors = userCategories.map(function(_, i) { return borderColors[i % borderColors.length]; });
+    var ugLabels = JSON.parse('{{ ug_labels|escapejs }}');
+    var ugCounts = JSON.parse('{{ ug_counts|escapejs }}').map(Number);
+    var predLabels = JSON.parse('{{ pred_labels|escapejs }}');
+    var predCounts = JSON.parse('{{ pred_counts|escapejs }}').map(Number);
+    var epLabels = JSON.parse('{{ ep_labels|escapejs }}');
+    var epCounts = JSON.parse('{{ ep_counts|escapejs }}').map(Number);
+    var psLabels = JSON.parse('{{ ps_labels|escapejs }}');
+    var psCounts = JSON.parse('{{ ps_counts|escapejs }}').map(Number);
+    var fpLabels = JSON.parse('{{ fp_labels|escapejs }}');
+    var fpCounts = JSON.parse('{{ fp_counts|escapejs }}').map(Number);
+    var sbLabels = JSON.parse('{{ sb_labels|escapejs }}');
+    var sbCounts = JSON.parse('{{ sb_counts|escapejs }}').map(Number);
 
-    var userCtx = document.getElementById('userChart').getContext('2d');
-    new Chart(userCtx, {
-        type: 'doughnut',
+    var userGrowthCtx = document.getElementById('userGrowthChart').getContext('2d');
+    new Chart(userGrowthCtx, {
+        type: 'bar',
         data: {
-            labels: userCategories,
+            labels: ugLabels,
             datasets: [{
-                data: userRatingCounts,
-                backgroundColor: bgColors,
-                borderColor: bdColors,
+                label: 'Users',
+                data: ugCounts,
+                backgroundColor: 'rgba(124, 58, 237, 0.65)',
+                borderColor: 'rgba(124, 58, 237, 1)',
                 borderWidth: 2,
-                hoverOffset: 8
+                borderRadius: 8,
+                borderSkipped: false
             }]
         },
-        options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            plugins: {
-                legend: {
-                    position: 'right',
-                    labels: { color: '#C4B5FD', font: { family: 'Inter', size: 13, weight: 500 }, padding: 16, usePointStyle: true, pointStyle: 'circle' }
-                },
-                tooltip: {
-                    backgroundColor: '#1A1333',
-                    titleColor: '#F5F3FF',
-                    bodyColor: '#C4B5FD',
-                    borderColor: '#3D3270',
-                    borderWidth: 1,
-                    cornerRadius: 10,
-                    padding: 14,
-                    titleFont: { family: 'Inter', weight: 600 },
-                    bodyFont: { family: 'Inter' }
-                }
-            }
-        }
+        options: baseOptions()
+    });
+
+    var predictionCtx = document.getElementById('predictionChart').getContext('2d');
+    new Chart(predictionCtx, {
+        type: 'bar',
+        data: {
+            labels: predLabels,
+            datasets: [{
+                label: 'Predictions',
+                data: predCounts,
+                backgroundColor: 'rgba(244, 114, 182, 0.6)',
+                borderColor: 'rgba(244, 114, 182, 1)',
+                borderWidth: 2,
+                borderRadius: 8,
+                borderSkipped: false
+            }]
+        },
+        options: baseOptions()
+    });
+
+    var eventPlanCtx = document.getElementById('eventPlanChart').getContext('2d');
+    new Chart(eventPlanCtx, {
+        type: 'doughnut',
+        data: {
+            labels: epLabels,
+            datasets: [{
+                data: epCounts,
+                backgroundColor: [
+                    'rgba(124, 58, 237, 0.75)',
+                    'rgba(244, 114, 182, 0.75)',
+                    'rgba(45, 212, 191, 0.75)',
+                    'rgba(251, 191, 36, 0.75)',
+                    'rgba(56, 189, 248, 0.75)',
+                    'rgba(52, 211, 153, 0.75)'
+                ],
+                borderWidth: 2,
+                borderColor: '#2D2255'
+            }]
+        },
+        options: { responsive: true, maintainAspectRatio: false }
+    });
+
+    var planSourceCtx = document.getElementById('planSourceChart').getContext('2d');
+    new Chart(planSourceCtx, {
+        type: 'pie',
+        data: {
+            labels: psLabels,
+            datasets: [{
+                data: psCounts,
+                backgroundColor: ['rgba(124, 58, 237, 0.75)', 'rgba(45, 212, 191, 0.75)'],
+                borderWidth: 2,
+                borderColor: '#2D2255'
+            }]
+        },
+        options: { responsive: true, maintainAspectRatio: false }
+    });
+
+    var colorPrefCtx = document.getElementById('colorPreferenceChart').getContext('2d');
+    new Chart(colorPrefCtx, {
+        type: 'bar',
+        data: {
+            labels: fpLabels,
+            datasets: [{
+                label: 'Users',
+                data: fpCounts,
+                backgroundColor: 'rgba(56, 189, 248, 0.65)',
+                borderColor: 'rgba(56, 189, 248, 1)',
+                borderWidth: 2,
+                borderRadius: 8,
+                borderSkipped: false
+            }]
+        },
+        options: baseOptions()
+    });
+
+    var stylebotCtx = document.getElementById('stylebotActivityChart').getContext('2d');
+    new Chart(stylebotCtx, {
+        type: 'line',
+        data: {
+            labels: sbLabels,
+            datasets: [{
+                label: 'Sessions',
+                data: sbCounts,
+                borderColor: 'rgba(52, 211, 153, 1)',
+                backgroundColor: 'rgba(52, 211, 153, 0.2)',
+                borderWidth: 2,
+                pointRadius: 3,
+                fill: true,
+                tension: 0.35
+            }]
+        },
+        options: baseOptions()
     });
 })();
 </script>
